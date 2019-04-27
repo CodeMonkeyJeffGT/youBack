@@ -1,6 +1,7 @@
 <?php
 namespace App\Service\School;
 use App\Entity\School;
+use Nefu\Nefuer;
 
 class SchoolNefuService implements SchoolDefaultInterface
 {
@@ -31,7 +32,13 @@ class SchoolNefuService implements SchoolDefaultInterface
      */
     public function auth(string $account, string $password, string $signature = '', array $others = array())
     {
-        return '233';
+        $nefuer = new Nefuer();
+        $password = strtoupper(md5($password));
+        if (0 === $nefuer->login($account, $password)['code']) {
+            return json_encode($nefuer->getCookie());
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -44,10 +51,10 @@ class SchoolNefuService implements SchoolDefaultInterface
      */
     public function info(string $signature)
     {
-        return array(
-            'name' => '谷田',
-            'sex' => '男',
-        );
+        $signature = json_decode($signature, true);
+        $nefuer = new Nefuer();
+        $nefuer->login(null, null, $signature);
+        return $nefuer->info();
     }
     
     /**
@@ -59,7 +66,13 @@ class SchoolNefuService implements SchoolDefaultInterface
      */
     public function getScore(string $signature, array $opts = array()): array
     {
-
+        $signature = json_decode($signature, true);
+        $nefuer = new Nefuer();
+        $nefuer->login(null, null, $signature);
+        return array(
+            'all' => $nefuer->scoreAll(),
+            'item' => $nefuer->scoreItem(),
+        );
     }
     
     /**
@@ -71,6 +84,7 @@ class SchoolNefuService implements SchoolDefaultInterface
      */
     public function getLesson(string $signature, array $opts = array()): array
     {
+        $signature = json_decode($signature, true);
 
     }
 
@@ -83,6 +97,7 @@ class SchoolNefuService implements SchoolDefaultInterface
      */
     public function getExam(string $signature, array $opts = array()): array
     {
+        $signature = json_decode($signature, true);
         
     }
 }

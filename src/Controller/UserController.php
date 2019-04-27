@@ -43,13 +43,13 @@ class UserController extends Controller
         if (false === $user) {
             $info = $school->info($rst);
             $user = $userService->insert($this->params['account'], $this->params['schoolId'], $info['name'], $info['sex']);
-        } else {
-            $userService->updateLastPassword($user, md5($this->params['password']));
         }
+        $userService->updateLastPassword($user, md5($this->params['password']));
         $jwt = $this->encodeJwt(array(
             'id' => $user->getId(),
             'signature' => $rst,
         ));
+        var_dump($school->getScore($rst));die;
         return $this->success($jwt);
 
     }
