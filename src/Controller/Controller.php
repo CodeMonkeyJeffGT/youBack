@@ -11,6 +11,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * 基础控制器，提供
  *      统一数据解析
  *      统一数据相应
+ * @method mixed        decodeJwt(string $code)
+ * @method string       encodeJwt(array $payload)
+ * @method string       getWholeUrl(string $url, $opts = array())
+ * @method int          checkParam(string $method, $params, $others = array())
  * @method JsonResponse success($data = null, string $message = null, $code = null)
  * @method JsonResponse error($code = null, string $message = null, $data = null)
  * @method JsonResponse toSign(string $message = null, $data = null, $code = null)
@@ -48,6 +52,44 @@ abstract class Controller extends FrameController
     }
 
     /**
+     * 解码及验证 Jwt
+     * @param string         $code       待解码字符串
+     * 
+     * @return array|bool
+     */
+    protected function decodeJwt(string $code)
+    {
+        list($header, $payload, $signature) = explode('.', $code);
+        if (hash('sha256', $header . '.' . $payload) !== $signature) {
+            return false;
+        }
+        $payload = json_decode(base64_decode($payload), true);
+        if ($payload['expire'] < time()) {
+            return false;
+        }
+        unset($payload['expire']);
+        return $payload;
+    }
+
+    /**
+     * 编码 Jwt
+     * @param array         $payload       待编码数据组
+     * 
+     * @return string
+     */
+    protected function encodeJwt(array $payload): string
+    {
+        $header = array(
+            'alg' => 'HS256',
+            'typ' => 'jwt',
+        );
+        $payload['expire'] = time() + 3600;
+        $code = base64_encode(json_encode($header)) . '.' . base64_encode(json_encode($payload));
+        $code .= '.' . hash('sha256', $code);
+        return $code;
+    }
+
+    /**
      * 获取完整 url
      * @param string        $url        短url（route里名称）
      * @param array         $opts       额外配置
@@ -71,7 +113,7 @@ abstract class Controller extends FrameController
      * 
      * @return int  0:通过 1:参数缺失 2:参数不合法
      */
-    protected function checkParam($method, $params, $others = array()): int
+    protected function checkParam(string $method, $params, $others = array()): int
     {
         $tmpParams = array();
         //获取参数
@@ -94,11 +136,15 @@ abstract class Controller extends FrameController
             if (
                 ! isset($tmpParams[$param]) 
                 && (
-                    ! isset($rule['notRequested']) 
-                    || $rule['notRequested'] !== true
+                    ! isset($rule['required']) 
+                    || $rule['required'] !== false
                 )
             ) {
                 return 1;
+            }
+
+            if ( ! isset ($rule['type'])) {
+                continue;
             }
 
             switch ($rule['type']) {
@@ -108,6 +154,9 @@ abstract class Controller extends FrameController
                     }
                     break;
                 case 'string':
+                    break;
+                case 'json':
+                    $tmpParams[$param] = json_decode($tmpParams[$param], true);
                     break;
             }
 
@@ -206,7 +255,7 @@ abstract class Controller extends FrameController
             static::PARAM_MISS => '参数缺失',
             static::INVALID_ARGUMENT => '参数不合法',
             static::REDIRECT => '自动跳转中，请稍候',
-        ) + $this->errMsg + $errMsg;
+        ) + $this->errMsg;
     }
 
 }

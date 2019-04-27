@@ -1,3 +1,13 @@
+#学校 ----------------------------------------------------------
+#查看学校列表
+school-list:
+    path: /api/v1/school
+    controller: App\Controller\SchoolController::list
+    methods: GET
+school-needs:
+    path: /api/v1/school/{id}
+    controller: App\Controller\SchoolController::getNeeds
+    methods: GET
 #用户 ----------------------------------------------------------
 #登录
 user-auth:
@@ -21,19 +31,19 @@ user-info-others:
     methods: GET
 #关注 ----------------------------------------------------------
 #查看关注/粉丝列表
-follow-list:
-    path: /api/v1/follow/
-    controller: App\Controller\FollowController::list
+user-follow-list:
+    path: /api/v1/user/follow/
+    controller: App\Controller\FollowUserController::list
     methods: GET
 #查看关注/粉丝数量
-follow-list:
-    path: /api/v1/follow/number
-    controller: App\Controller\FollowController::number
+user-follow-number:
+    path: /api/v1/user/follow/number
+    controller: App\Controller\FollowUserController::number
     methods: GET
 #查看他人关注/粉丝数量
-follow-list-others:
-    path: /api/v1/follow/number/{id}
-    controller: App\Controller\FollowController::othersNumber
+user-follow-number-others:
+    path: /api/v1/user/follow/number/{id}
+    controller: App\Controller\FollowUserController::othersNumber
     methods: GET
 #论坛 ----------------------------------------------------------
 #版块列表
@@ -59,12 +69,12 @@ column-info-update:
 #关注版块
 column-follow:
     path: /api/v1/column/follow
-    controller: App\Controller\ColumnController::follow
+    controller: App\Controller\FollowColumnController::follow
     methods: POST
 #关注版块列表
 column-follow-list:
     path: /api/v1/column/follow
-    controller: App\Controller\ColumnController::followList
+    controller: App\Controller\FollowColumnController::followList
     methods: GET
 #帖子列表
 page-list:
@@ -112,7 +122,7 @@ page-collect:
     controller: App\Controller\PageCollectController::collect
     methods: POST
 #取消收藏帖子
-page-collect:
+page-uncollect:
     path: /api/v1/page/{id}/collect/
     controller: App\Controller\PageCollectController::uncollect
     methods: DELETE
