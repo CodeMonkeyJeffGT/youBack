@@ -31,6 +31,7 @@ class SchoolNefuService implements SchoolDefaultInterface
      */
     public function auth(string $account, string $password, string $signature = '', array $others = array())
     {
+        return '233';
     }
 
     /**
@@ -43,7 +44,10 @@ class SchoolNefuService implements SchoolDefaultInterface
      */
     public function info(string $signature)
     {
-
+        return array(
+            'name' => '谷田',
+            'sex' => '男',
+        );
     }
     
     /**

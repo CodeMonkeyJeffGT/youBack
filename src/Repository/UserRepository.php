@@ -19,7 +19,25 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function checkExist($account, $schoolId): bool
+    public function insert($account, $schoolId, $name, $sex)
+    {
+        $entityManager = $this->getEntityManager();
+        $user = new User();
+        $user->setAccount($account)
+            ->setSchoolId($schoolId)
+            ->setName($name)
+            ->setNickname($name)
+            ->setSex($sex)
+            ->setCreated(new \DateTime('NOW'))
+            ->setheadpic('')
+            ->setSign('还未设置个签哦')
+            ->setLastPassword('');
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return $user;
+    }
+
+    public function checkExist($account, $schoolId)
     {
         $user = $this->createQueryBuilder('u')
             ->andWhere('u.account = :account')
@@ -29,35 +47,20 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
-        return ! is_null($user);
+        return is_null($user) ? false : $user;
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function updateLastPassword($user, $password)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $entityManager = $this->getEntityManager();
+        $user->setLastPassword($password);
+        $entityManager->persist($user);
+        $entityManager->flush();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?User
+    public function getUser($id)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $user = $this->find($id);
+        return $user;
     }
-    */
 }

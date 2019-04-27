@@ -39,13 +39,15 @@ class UserController extends Controller
         if ($rst === false) {
             return $this->error(static::ERROR, '登录失败');
         }
-        if (false === $userService->checkExist($this->params['account'], $this->params['schoolId'])) {
+        $user = $userService->checkExist($this->params['account'], $this->params['schoolId']);
+        if (false === $user) {
             $info = $school->info($rst);
-            $userService->insert($this->params['account'], $this->params['schoolId'], $info['name'], $info['sex']);
+            $user = $userService->insert($this->params['account'], $this->params['schoolId'], $info['name'], $info['sex']);
         } else {
-            $userService->updateLastPassword($this->params['password']);
+            $userService->updateLastPassword($user, md5($this->params['password']));
         }
         $jwt = $this->encodeJwt(array(
+            'id' => $user->getId(),
             'signature' => $rst,
         ));
         return $this->success($jwt);
@@ -55,17 +57,33 @@ class UserController extends Controller
     public function info(UserService $userService, FollowUserService $followUserService): JsonResponse
     {
         $checkRst = $this->checkParam('GET', array(
+            'signature' => array('type' => 'jwt'),
         ));
-        return $this->success($checkRst);
+        if ($checkRst === 1) {
+            return $this->error(static::PARAM_MISS);
+        } elseif ($checkRst === 2) {
+            return $this->error(static::INVALID_ARGUMENT);
+        } elseif ($checkRst === 3) {
+            return $this->toSign();
+        }
+        $user = $userService->getUser($this->params['signature']['id']);
+        if (is_null($user)) {
+            return $this->error(static::ERROR, '用户不存在');
+        }
+        return $this->success($user);
     }
 
     public function updateInfo(UserService $userService): JsonResponse
     {
-        
+        //todo
     }
 
     public function othersInfo($id, UserService $userService, FollowUserService $followUserService): JsonResponse
     {
-
+        $user = $userService->getUser($id);
+        if (is_null($user)) {
+            return $this->error(static::ERROR, '用户不存在');
+        }
+        return $this->success($user);
     }
 }

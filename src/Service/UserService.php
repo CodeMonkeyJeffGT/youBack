@@ -12,8 +12,23 @@ class UserService
         $this->userDb = $this->entityManager->getRepository(User::class);
     }
 
-    public function checkExist($account, $schoolId): bool
+    public function getUser($id)
+    {
+        return $this->userDb->getUser($id);
+    }
+
+    public function checkExist($account, $schoolId)
     {
         return $this->userDb->checkExist($account, $schoolId);
+    }
+
+    public function insert($account, $schoolId, $name, $sex)
+    {
+        return $this->userDb->insert($account, $schoolId, $name, $sex);
+    }
+
+    public function updateLastPassword($user, $password)
+    {
+        return $this->userDb->updateLastPassword($user, $password);
     }
 }

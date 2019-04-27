@@ -130,7 +130,6 @@ abstract class Controller extends FrameController
                 $tmpParams = json_decode(file_get_contents('PHP://INPUT'));
                 break;
         }
-
         //检验参数是否符合规则
         foreach ($params as $param => $rule) {
             if (
@@ -158,6 +157,11 @@ abstract class Controller extends FrameController
                 case 'json':
                     $tmpParams[$param] = json_decode($tmpParams[$param], true);
                     break;
+                case 'jwt':
+                    $tmpParams[$param] = $this->decodeJwt($tmpParams[$param]);
+                    if (false === $tmpParams[$param]) {
+                        return 3;
+                    }
             }
 
             if (isset($others[$param]) && $others[$param]($tmpParams[$param]) === false) {
