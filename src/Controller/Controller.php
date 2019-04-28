@@ -59,7 +59,11 @@ abstract class Controller extends FrameController
      */
     protected function decodeJwt(string $code)
     {
-        list($header, $payload, $signature) = explode('.', $code);
+        $exp = explode('.', $code);
+        if (count($exp) < 3) {
+            return false;
+        }
+        list($header, $payload, $signature) = $exp;
         if (hash('sha256', $header . '.' . $payload) !== $signature) {
             return false;
         }
@@ -140,6 +144,8 @@ abstract class Controller extends FrameController
                 )
             ) {
                 return 1;
+            } else {
+                $tmpParams[$param] = $tmpParams[$param] ?? null;
             }
 
             if ( ! isset ($rule['type'])) {
@@ -158,7 +164,7 @@ abstract class Controller extends FrameController
                     $tmpParams[$param] = json_decode($tmpParams[$param], true);
                     break;
                 case 'jwt':
-                    $tmpParams[$param] = $this->decodeJwt($tmpParams[$param]);
+                    $tmpParams[$param] = $this->decodeJwt((string)$tmpParams[$param]);
                     if (false === $tmpParams[$param]) {
                         return 3;
                     }

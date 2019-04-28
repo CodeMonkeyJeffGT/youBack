@@ -41,6 +41,11 @@ class Column
      */
     private $created;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $owner_id;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,6 +107,18 @@ class Column
     public function setCreated(\DateTimeInterface $created): self
     {
         $this->created = $created;
+
+        return $this;
+    }
+
+    public function getOwnerId(): ?int
+    {
+        return $this->owner_id;
+    }
+
+    public function setOwnerId(int $owner_id): self
+    {
+        $this->owner_id = $owner_id;
 
         return $this;
     }

@@ -49,7 +49,6 @@ class UserController extends Controller
             'id' => $user->getId(),
             'signature' => $rst,
         ));
-        var_dump($school->getScore($rst));die;
         return $this->success($jwt);
 
     }
@@ -57,7 +56,7 @@ class UserController extends Controller
     public function info(UserService $userService, FollowUserService $followUserService): JsonResponse
     {
         $checkRst = $this->checkParam('GET', array(
-            'signature' => array('type' => 'jwt'),
+            'signature' => array('type' => 'jwt', 'required' => false),
         ));
         if ($checkRst === 1) {
             return $this->error(static::PARAM_MISS);

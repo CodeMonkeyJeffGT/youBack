@@ -13,6 +13,21 @@ class FollowUserController extends Controller
 {
     public function list(FollowUserService $followUserService): JsonResponse
     {
-        
+    }
+
+    public function number(FollowUserService $followUserService): JsonResponse
+    {
+    }
+
+    public function othersNumber($id, FollowUserService $followUserService): JsonResponse
+    {
+    }
+
+    public function follow($id, FollowUserService $followUserService): JsonResponse
+    {
+    }
+
+    public function unfollow($id, FollowUserService $followUserService): JsonResponse
+    {
     }
 }

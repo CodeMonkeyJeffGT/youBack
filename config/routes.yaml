@@ -35,6 +35,16 @@ user-follow-list:
     path: /api/v1/user/follow/
     controller: App\Controller\FollowUserController::list
     methods: GET
+#关注
+user-follow:
+    path: /api/v1/user/follow/{id}
+    controller: App\Controller\FollowUserController::follow
+    methods: POST
+#取消关注
+user-unfollow:
+    path: /api/v1/user/follow/{id}
+    controller: App\Controller\FollowUserController::unfollow
+    methods: DELETE
 #查看关注/粉丝数量
 user-follow-number:
     path: /api/v1/user/follow/number
@@ -63,19 +73,36 @@ column-apply:
     methods: POST
 #编辑版块信息
 column-info-update:
-    path: /api/v1/column/
+    path: /api/v1/column/{id}
     controller: App\Controller\ColumnController::updateInfo
     methods: PUT
-#关注版块
-column-follow:
-    path: /api/v1/column/follow
-    controller: App\Controller\FollowColumnController::follow
-    methods: POST
+#关注版块 --------------------------------------------------------
 #关注版块列表
 column-follow-list:
     path: /api/v1/column/follow
     controller: App\Controller\FollowColumnController::followList
     methods: GET
+#关注版块
+column-follow:
+    path: /api/v1/column/follow
+    controller: App\Controller\FollowColumnController::follow
+    methods: POST
+#取消关注版块
+column-unollow:
+    path: /api/v1/column/follow
+    controller: App\Controller\FollowColumnController::unfollow
+    methods: DELETE
+#关注版块数量
+column-follow-number:
+    path: /api/v1/column/follow/number
+    controller: App\Controller\FollowColumnController::number
+    methods: GET
+#他人关注版块数量
+column-follow-number-others:
+    path: /api/v1/column/follow/number
+    controller: App\Controller\FollowColumnController::othersNumber
+    methods: GET
+#帖子 ----------------------------------------------------------
 #帖子列表
 page-list:
     path: /api/v1/page/
@@ -86,6 +113,17 @@ page-publish:
     path: /api/v1/page/
     controller: App\Controller\PageController::publish
     methods: POST
+#删除帖子
+page-delete:
+    path: /api/v1/page/
+    controller: App\Controller\PageController::delete
+    methods: DELETE
+#点赞帖子 -----------------——————-------------------------------
+#获取点赞数量
+page-like-number:
+    path: /api/v1/page/{id}/like/
+    controller: App\Controller\PageLikeController::number
+    methods: GET
 #点赞帖子
 page-like:
     path: /api/v1/page/{id}/like/
@@ -96,11 +134,33 @@ page-unlike:
     path: /api/v1/page/{id}/like/
     controller: App\Controller\PageLikeController::unlike
     methods: DELETE
+#评论帖子 -----------------——————-------------------------------
+#评论列表
+page-comment-list:
+    path: /api/v1/page/{id}/comment/
+    controller: App\Controller\PageCommentController::list
+    methods: GET
 #评论帖子
 page-comment:
     path: /api/v1/page/{id}/comment/
     controller: App\Controller\PageCommentController::publish
     methods: POST
+#删除评论
+page-comment-delete:
+    path: /api/v1/page/{id}/comment/
+    controller: App\Controller\PageCommentController::delete
+    methods: DELETE
+#评论数量
+page-comment-number:
+    path: /api/v1/page/{id}/comment/number
+    controller: App\Controller\PageCommentController::number
+    methods: GET
+#点赞评论 -----------------——————-------------------------------
+#帖子点赞数量
+page-comment-like-number:
+    path: /api/v1/comment/{id}
+    controller: App\Controller\CommentLikeController::number
+    methods: GET
 #点赞评论
 page-comment-like:
     path: /api/v1/comment/{id}
@@ -116,6 +176,12 @@ page-collect-list:
     path: /api/v1/page/{id}/collect/
     controller: App\Controller\PageCollectController::list
     methods: GET
+#收藏帖子 -----------------——————-------------------------------
+#收藏帖子数量
+page-collect-number:
+    path: /api/v1/page/{id}/collect/number
+    controller: App\Controller\PageCollectController::number
+    methods: GET
 #收藏帖子
 page-collect:
     path: /api/v1/page/{id}/collect/
@@ -126,6 +192,7 @@ page-uncollect:
     path: /api/v1/page/{id}/collect/
     controller: App\Controller\PageCollectController::uncollect
     methods: DELETE
+#举报 ---------------------——————-------------------------------
 #举报（帖子/评论）
 page-report:
     path: /api/v1/page/{id}/report/
