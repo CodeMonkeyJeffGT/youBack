@@ -84,6 +84,8 @@ class SchoolNefuService implements SchoolDefaultInterface
      */
     public function getLesson(string $signature, array $opts = array()): array
     {
+        if ($signature == 'ceshi') {
+        }
         $signature = json_decode($signature, true);
 
     }
@@ -97,6 +99,8 @@ class SchoolNefuService implements SchoolDefaultInterface
      */
     public function getExam(string $signature, array $opts = array()): array
     {
+        if ($signature == 'ceshi') {
+        }
         $signature = json_decode($signature, true);
         
     }

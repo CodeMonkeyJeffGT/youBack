@@ -5,6 +5,7 @@ use App\Entity\User;
 class UserService
 {
     private $entityManager;
+    private $userDb;
 
     public function __construct(\Doctrine\ORM\EntityManagerInterface $entityManager)
     {

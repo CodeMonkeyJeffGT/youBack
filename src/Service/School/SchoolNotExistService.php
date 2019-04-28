@@ -31,7 +31,7 @@ class SchoolNotExistService implements SchoolDefaultInterface
      */
     public function auth(string $account, string $password, string $signature = '', array $others = array())
     {
-        return false;
+        return $account;
     }
 
     /**
@@ -42,7 +42,13 @@ class SchoolNotExistService implements SchoolDefaultInterface
      * 
      * @return array
      */
-    public function info(string $signature){}
+    public function info(string $signature)
+    {
+        return array(
+            'name' => $signature,
+            'sex' => array('男', '女')[rand(0, 1)],
+        );
+    }
     
     /**
      * 获取成绩

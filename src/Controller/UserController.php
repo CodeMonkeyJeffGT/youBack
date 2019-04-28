@@ -3,32 +3,29 @@ namespace App\Controller;
 
 use App\Service\UserService;
 use App\Service\SchoolService;
-use App\Service\FollowUserService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * 用户控制器
  * 
  * @method JsonResponse auth(UserService $userService)
- * @method JsonResponse info(UserService $userService, FollowUserService $followUserService)
+ * @method JsonResponse info(UserService $userService)
  * @method JsonResponse updateInfo(UserService $userService)
- * @method JsonResponse othersInfo($id, UserService $userService, FollowUserService $followUserService)
+ * @method JsonResponse othersInfo($id, UserService $userService)
  */
 class UserController extends Controller
 {
     public function auth(UserService $userService, SchoolService $schoolService): JsonResponse
     {
-        $checkRst = $this->checkParam('POST', array(
+        $checkRst = $this->checkParam('JSON', array(
             'schoolId' => array('type' => 'number'),
             'account' => array('type' => 'string'),
             'password' => array('type' => 'string'),
             'signature' => array('type' => 'string'),
-            'others' => array('type' => 'json'),
+            'others' => array('type' => 'array'),
         ));
-        if ($checkRst === 1) {
-            return $this->error(static::PARAM_MISS);
-        } elseif ($checkRst === 2) {
-            return $this->error(static::INVALID_ARGUMENT);
+        if ($checkRst !== static::OK) {
+            return $this->error($checkRst);
         }
         $className = $schoolService->getSchoolClassName($this->params['schoolId']);
         if (false === $className) {
@@ -53,17 +50,13 @@ class UserController extends Controller
 
     }
 
-    public function info(UserService $userService, FollowUserService $followUserService): JsonResponse
+    public function info(UserService $userService): JsonResponse
     {
-        $checkRst = $this->checkParam('GET', array(
+        $checkRst = $this->checkParam('HEADER', array(
             'signature' => array('type' => 'jwt', 'required' => false),
         ));
-        if ($checkRst === 1) {
-            return $this->error(static::PARAM_MISS);
-        } elseif ($checkRst === 2) {
-            return $this->error(static::INVALID_ARGUMENT);
-        } elseif ($checkRst === 3) {
-            return $this->toSign();
+        if ($checkRst !== static::OK) {
+            return $this->error($checkRst);
         }
         $user = $userService->getUser($this->params['signature']['id']);
         if (is_null($user)) {
@@ -77,7 +70,7 @@ class UserController extends Controller
         //todo
     }
 
-    public function othersInfo($id, UserService $userService, FollowUserService $followUserService): JsonResponse
+    public function othersInfo($id, UserService $userService): JsonResponse
     {
         $user = $userService->getUser($id);
         if (is_null($user)) {

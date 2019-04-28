@@ -4,6 +4,7 @@ school-list:
     path: /api/v1/school
     controller: App\Controller\SchoolController::list
     methods: GET
+#学校登录除账号密码外其他需求
 school-needs:
     path: /api/v1/school/{id}
     controller: App\Controller\SchoolController::getNeeds
@@ -11,7 +12,7 @@ school-needs:
 #用户 ----------------------------------------------------------
 #登录
 user-auth:
-    path: /api/v1/user/auth
+    path: /api/v1/userAuth
     controller: App\Controller\UserController::Auth
     methods: POST
 #查看个人信息
@@ -32,27 +33,27 @@ user-info-others:
 #关注 ----------------------------------------------------------
 #查看关注/粉丝列表
 user-follow-list:
-    path: /api/v1/user/follow/
+    path: /api/v1/userFollow/
     controller: App\Controller\FollowUserController::list
     methods: GET
 #关注
 user-follow:
-    path: /api/v1/user/follow/{id}
+    path: /api/v1/userFollow/{id}
     controller: App\Controller\FollowUserController::follow
     methods: POST
 #取消关注
 user-unfollow:
-    path: /api/v1/user/follow/{id}
+    path: /api/v1/userFollow/{id}
     controller: App\Controller\FollowUserController::unfollow
     methods: DELETE
 #查看关注/粉丝数量
 user-follow-number:
-    path: /api/v1/user/follow/number
+    path: /api/v1/userFollowNumber
     controller: App\Controller\FollowUserController::number
     methods: GET
 #查看他人关注/粉丝数量
 user-follow-number-others:
-    path: /api/v1/user/follow/number/{id}
+    path: /api/v1/userFollowNumber/{id}
     controller: App\Controller\FollowUserController::othersNumber
     methods: GET
 #论坛 ----------------------------------------------------------
@@ -79,27 +80,27 @@ column-info-update:
 #关注版块 --------------------------------------------------------
 #关注版块列表
 column-follow-list:
-    path: /api/v1/column/follow
+    path: /api/v1/columnFollow
     controller: App\Controller\FollowColumnController::followList
     methods: GET
 #关注版块
 column-follow:
-    path: /api/v1/column/follow
+    path: /api/v1/columnFollow
     controller: App\Controller\FollowColumnController::follow
     methods: POST
 #取消关注版块
 column-unollow:
-    path: /api/v1/column/follow
+    path: /api/v1/columnFollow
     controller: App\Controller\FollowColumnController::unfollow
     methods: DELETE
 #关注版块数量
 column-follow-number:
-    path: /api/v1/column/follow/number
+    path: /api/v1/columnFollowNumber
     controller: App\Controller\FollowColumnController::number
     methods: GET
 #他人关注版块数量
 column-follow-number-others:
-    path: /api/v1/column/follow/number
+    path: /api/v1/columnFollowNumber
     controller: App\Controller\FollowColumnController::othersNumber
     methods: GET
 #帖子 ----------------------------------------------------------

@@ -131,8 +131,13 @@ abstract class Controller extends FrameController
                 $tmpParams = $this->request->request->all();
                 break;
             case 'JSON':
-                $tmpParams = json_decode(file_get_contents('PHP://INPUT'));
+                $tmpParams = json_decode(file_get_contents('PHP://INPUT'), true);
                 break;
+            case 'HEADER':
+                $tmpParams = $this->request->headers->all();
+                foreach($tmpParams as $key => $value) {
+                    $tmpParams[$key] = $value[0];
+                }
         }
         //检验参数是否符合规则
         foreach ($params as $param => $rule) {
@@ -143,7 +148,7 @@ abstract class Controller extends FrameController
                     || $rule['required'] !== false
                 )
             ) {
-                return 1;
+                return static::PARAM_MISS;
             } else {
                 $tmpParams[$param] = $tmpParams[$param] ?? null;
             }
@@ -155,10 +160,15 @@ abstract class Controller extends FrameController
             switch ($rule['type']) {
                 case 'number':
                     if ( ! is_numeric($tmpParams[$param])) {
-                        return 2;
+                        return static::INVALID_ARGUMENT;
                     }
                     break;
                 case 'string':
+                    break;
+                case 'array':
+                    if ( ! is_array($tmpParams[$param])) {
+                        return static::INVALID_ARGUMENT;
+                    }
                     break;
                 case 'json':
                     $tmpParams[$param] = json_decode($tmpParams[$param], true);
@@ -166,16 +176,16 @@ abstract class Controller extends FrameController
                 case 'jwt':
                     $tmpParams[$param] = $this->decodeJwt((string)$tmpParams[$param]);
                     if (false === $tmpParams[$param]) {
-                        return 3;
+                        return static::NOT_AUTH;
                     }
             }
 
             if (isset($others[$param]) && $others[$param]($tmpParams[$param]) === false) {
-                return 2;
+                return static::INVALID_ARGUMENT;
             }
             $this->params[$param] = $tmpParams[$param];
         }
-        return 0;
+        return static::OK;
     }
 
     /**

@@ -63,4 +63,14 @@ class UserRepository extends ServiceEntityRepository
         $user = $this->find($id);
         return $user;
     }
+
+    public function listUser($ids)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.id in (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
