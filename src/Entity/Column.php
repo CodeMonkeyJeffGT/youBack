@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,19 +34,26 @@ class Column
     private $type;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $school_id;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $created;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\School", inversedBy="columns")
      */
-    private $owner_id;
+    private $school;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="columns")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $owner;
+
+    public function __construct()
+    {
+        $this->columnClassifications = new ArrayCollection();
+        $this->followColumns = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -87,18 +96,6 @@ class Column
         return $this;
     }
 
-    public function getSchoolId(): ?int
-    {
-        return $this->school_id;
-    }
-
-    public function setSchoolId(int $school_id): self
-    {
-        $this->school_id = $school_id;
-
-        return $this;
-    }
-
     public function getCreated(): ?\DateTimeInterface
     {
         return $this->created;
@@ -111,14 +108,26 @@ class Column
         return $this;
     }
 
-    public function getOwnerId(): ?int
+    public function getSchool(): ?school
     {
-        return $this->owner_id;
+        return $this->school;
     }
 
-    public function setOwnerId(int $owner_id): self
+    public function setSchool(?school $school): self
     {
-        $this->owner_id = $owner_id;
+        $this->school = $school;
+
+        return $this;
+    }
+
+    public function getOwner(): ?user
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?user $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }

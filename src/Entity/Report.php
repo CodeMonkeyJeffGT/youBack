@@ -22,11 +22,6 @@ class Report
     private $type;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $r_id;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $content;
@@ -35,6 +30,17 @@ class Report
      * @ORM\Column(type="datetime")
      */
     private $created;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $r_id;
 
     public function getId(): ?int
     {
@@ -49,18 +55,6 @@ class Report
     public function setType(int $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getRId(): ?int
-    {
-        return $this->r_id;
-    }
-
-    public function setRId(int $r_id): self
-    {
-        $this->r_id = $r_id;
 
         return $this;
     }
@@ -85,6 +79,30 @@ class Report
     public function setCreated(\DateTimeInterface $created): self
     {
         $this->created = $created;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getRId(): ?int
+    {
+        return $this->r_id;
+    }
+
+    public function setRId(int $r_id): self
+    {
+        $this->r_id = $r_id;
 
         return $this;
     }

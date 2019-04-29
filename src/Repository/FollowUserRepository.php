@@ -19,35 +19,36 @@ class FollowUserRepository extends ServiceEntityRepository
         parent::__construct($registry, FollowUser::class);
     }
 
-    public function follows($id)
+    public function follows($user)
     {
         return $this->findBy(array(
-            'u_id' => $id,
+            'user' => $user,
         ));
     }
 
-    public function followed($id)
+    public function followed($user)
     {
         return $this->findBy(array(
-            'f_id' => $id,
+            'follow' => $user,
         ));
     }
 
-    public function checkFollow($uId, $fId)
+    public function checkFollow($user, $follow)
     {
         $followUser = $this->findOneBy(array(
-            'u_id' => $uId,
-            'f_id' => $fId,
+            'user' => $user,
+            'follow' => $follow,
         ));
         return $followUser ?? false;
     }
 
-    public function follow($uId, $fId)
+    public function follow($user, $follow)
     {
         $entityManager = $this->getEntityManager();
         $followUser = new FollowUser();
-        $followUser->setUId($uId)
-            ->setFId($fId)
+        $followUser
+            ->setUser($user)
+            ->setFollow($follow)
         ;
         $entityManager->persist($followUser);
         $entityManager->flush();

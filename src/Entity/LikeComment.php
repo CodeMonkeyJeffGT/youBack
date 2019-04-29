@@ -17,40 +17,42 @@ class LikeComment
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $u_id;
+    private $user;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\PageComment")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $c_id;
+    private $comment;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUId(): ?int
+    public function getUser(): ?user
     {
-        return $this->u_id;
+        return $this->user;
     }
 
-    public function setUId(int $u_id): self
+    public function setUser(?user $user): self
     {
-        $this->u_id = $u_id;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getCId(): ?int
+    public function getComment(): ?pageComment
     {
-        return $this->c_id;
+        return $this->comment;
     }
 
-    public function setCId(int $c_id): self
+    public function setComment(?pageComment $comment): self
     {
-        $this->c_id = $c_id;
+        $this->comment = $comment;
 
         return $this;
     }

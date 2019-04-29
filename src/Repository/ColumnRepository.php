@@ -19,6 +19,11 @@ class ColumnRepository extends ServiceEntityRepository
         parent::__construct($registry, Column::class);
     }
 
+    public function listColumns($query, $lastId, $limit)
+    {
+        return 1;
+    }
+
     // /**
     //  * @return Column[] Returns an array of Column objects
     //  */

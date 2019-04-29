@@ -19,9 +19,9 @@ class SchoolService
         return $schools;
     }
 
-    public function getSchoolClassName($id)
+    public function getSchool($id)
     {
-        $className = $this->schoolDb->getSchoolClassName($id);
-        return $className;
+        $school = $this->schoolDb->getSchool($id);
+        return $school;
     }
 }

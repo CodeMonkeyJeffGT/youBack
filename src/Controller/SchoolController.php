@@ -14,16 +14,22 @@ class SchoolController extends Controller
     public function list(SchoolService $schoolService): JsonResponse
     {
         $schools = $schoolService->list();
+        foreach ($schools as $key => $value) {
+            $schools[$key] = array(
+                'id' => $value->getId(),
+                'name' => $value->getName(),
+            );
+        }
         return $this->success($schools);
     }
 
     public function getNeeds($id, SchoolService $schoolService): JsonResponse
     {
-        $className = $schoolService->getSchoolClassName($id);
-        if (false === $className) {
+        $school = $schoolService->getSchool($id);
+        if (false === $school) {
             return $this->error(static::ERROR, 'id为' . $id . '的学校不存在，请勿修改程序');
         }
-        $school = $this->container->get('App\\Service\School\\School' . $className . 'Service');
+        $school = $this->container->get('App\\Service\School\\School' . $school->getClassName() . 'Service');
         return $this->success($school->getNeeds());
     }
 }

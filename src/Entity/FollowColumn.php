@@ -17,40 +17,42 @@ class FollowColumn
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="followColumns")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $u_id;
+    private $user;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Column", inversedBy="followColumns")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $c_id;
+    private $acolumn;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUId(): ?int
+    public function getUser(): ?user
     {
-        return $this->u_id;
+        return $this->user;
     }
 
-    public function setUId(int $u_id): self
+    public function setUser(?user $user): self
     {
-        $this->u_id = $u_id;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getCId(): ?int
+    public function getAcolumn(): ?column
     {
-        return $this->c_id;
+        return $this->acolumn;
     }
 
-    public function setCId(int $c_id): self
+    public function setAcolumn(?column $acolumn): self
     {
-        $this->c_id = $c_id;
+        $this->acolumn = $acolumn;
 
         return $this;
     }

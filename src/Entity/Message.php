@@ -22,16 +22,6 @@ class Message
     private $type;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $send_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $u_id;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $content;
@@ -40,6 +30,18 @@ class Message
      * @ORM\Column(type="datetime")
      */
     private $created;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $sender;
 
     public function getId(): ?int
     {
@@ -54,30 +56,6 @@ class Message
     public function setType(int $type): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getSendId(): ?int
-    {
-        return $this->send_id;
-    }
-
-    public function setSendId(int $send_id): self
-    {
-        $this->send_id = $send_id;
-
-        return $this;
-    }
-
-    public function getUId(): ?int
-    {
-        return $this->u_id;
-    }
-
-    public function setUId(int $u_id): self
-    {
-        $this->u_id = $u_id;
 
         return $this;
     }
@@ -102,6 +80,30 @@ class Message
     public function setCreated(\DateTimeInterface $created): self
     {
         $this->created = $created;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getSender(): ?User
+    {
+        return $this->sender;
+    }
+
+    public function setSender(?User $sender): self
+    {
+        $this->sender = $sender;
 
         return $this;
     }

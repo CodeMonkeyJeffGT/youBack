@@ -22,24 +22,31 @@ class PageComment
     private $content;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $column_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $f_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $u_id;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $created;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Page")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $page;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\PageComment")
+     */
+    private $father;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\PageComment")
+     */
+    private $back;
 
     public function getId(): ?int
     {
@@ -58,42 +65,6 @@ class PageComment
         return $this;
     }
 
-    public function getColumnId(): ?int
-    {
-        return $this->column_id;
-    }
-
-    public function setColumnId(int $column_id): self
-    {
-        $this->column_id = $column_id;
-
-        return $this;
-    }
-
-    public function getFId(): ?int
-    {
-        return $this->f_id;
-    }
-
-    public function setFId(int $f_id): self
-    {
-        $this->f_id = $f_id;
-
-        return $this;
-    }
-
-    public function getUId(): ?int
-    {
-        return $this->u_id;
-    }
-
-    public function setUId(int $u_id): self
-    {
-        $this->u_id = $u_id;
-
-        return $this;
-    }
-
     public function getCreated(): ?\DateTimeInterface
     {
         return $this->created;
@@ -102,6 +73,54 @@ class PageComment
     public function setCreated(\DateTimeInterface $created): self
     {
         $this->created = $created;
+
+        return $this;
+    }
+
+    public function getPage(): ?Page
+    {
+        return $this->page;
+    }
+
+    public function setPage(?Page $page): self
+    {
+        $this->page = $page;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getFather(): ?self
+    {
+        return $this->father;
+    }
+
+    public function setFather(?self $father): self
+    {
+        $this->father = $father;
+
+        return $this;
+    }
+
+    public function getBack(): ?self
+    {
+        return $this->back;
+    }
+
+    public function setBack(?self $back): self
+    {
+        $this->back = $back;
 
         return $this;
     }

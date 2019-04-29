@@ -16,52 +16,44 @@ class FollowUserService
         $this->userDb = $this->entityManager->getRepository(User::class);
     }
 
-    public function list($id)
+    public function list($user)
     {
-        $follows = $this->followUserDb->follows($id);
-        $followed = $this->followUserDb->followed($id);
+        $follows = $this->followUserDb->follows($user);
+        $followed = $this->followUserDb->followed($user);
         foreach ($follows as $key => $value) {
-            $follows[$key] = $value->getFid();
+            $follows[$key] = $value->getFollow();
         }
-        $follows = $this->userDb->listUser(implode(',', $follows));
         foreach ($followed as $key => $value) {
-            $followed[$key] = $value->getUid();
+            $followed[$key] = $value->getUser();
         }
-        $followed = $this->userDb->listUser(implode(',', $followed));
         return array(
             'follows' => $follows,
             'followed' => $followed,
         );
     }
 
-    public function number($id)
+    public function number($user)
     {
-        $followsNum = count($this->followUserDb->follows($id));
-        $followedNum = count($this->followUserDb->followed($id));
+        $followsNum = count($this->followUserDb->follows($user));
+        $followedNum = count($this->followUserDb->followed($user));
         return array(
             'followsNum' => $followsNum,
             'followedNum' => $followedNum,
         );
     }
 
-    public function follow($uId, $fId)
+    public function follow($user, $follow)
     {
-        if (in_array(null, array($this->userDb->getUser($uId), $this->userDb->getUser($fId)))) {
+        if ($this->followUserDb->checkFollow($user, $follow)) {
             return false;
         }
-        if ($this->followUserDb->checkFollow($uId, $fId)) {
-            return false;
-        }
-        $this->followUserDb->follow($uId, $fId);
+        $this->followUserDb->follow($user, $follow);
         return true;
     }
 
-    public function unFollow($uId, $fId)
+    public function unFollow($user, $follow)
     {
-        if (in_array(null, array($this->userDb->getUser($uId), $this->userDb->getUser($fId)))) {
-            return false;
-        }
-        $followUser = $this->followUserDb->checkFollow($uId, $fId);
+        $followUser = $this->followUserDb->checkFollow($user, $follow);
         if ($followUser === false) {
             return false;
         }

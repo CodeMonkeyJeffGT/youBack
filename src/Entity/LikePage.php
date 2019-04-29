@@ -17,40 +17,42 @@ class LikePage
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $u_id;
+    private $user;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Page")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $p_id;
+    private $page;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUId(): ?int
+    public function getUser(): ?User
     {
-        return $this->u_id;
+        return $this->user;
     }
 
-    public function setUId(int $u_id): self
+    public function setUser(?User $user): self
     {
-        $this->u_id = $u_id;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getPId(): ?int
+    public function getPage(): ?Page
     {
-        return $this->p_id;
+        return $this->page;
     }
 
-    public function setPId(int $p_id): self
+    public function setPage(?Page $page): self
     {
-        $this->p_id = $p_id;
+        $this->page = $page;
 
         return $this;
     }

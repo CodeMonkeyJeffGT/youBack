@@ -19,45 +19,23 @@ class MenuUser
     /**
      * @ORM\Column(type="integer")
      */
-    private $menu_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $u_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
     private $loc;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Menu")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $menu;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getMenuId(): ?int
-    {
-        return $this->menu_id;
-    }
-
-    public function setMenuId(int $menu_id): self
-    {
-        $this->menu_id = $menu_id;
-
-        return $this;
-    }
-
-    public function getUId(): ?int
-    {
-        return $this->u_id;
-    }
-
-    public function setUId(int $u_id): self
-    {
-        $this->u_id = $u_id;
-
-        return $this;
     }
 
     public function getLoc(): ?int
@@ -68,6 +46,30 @@ class MenuUser
     public function setLoc(int $loc): self
     {
         $this->loc = $loc;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getMenu(): ?menu
+    {
+        return $this->menu;
+    }
+
+    public function setMenu(?menu $menu): self
+    {
+        $this->menu = $menu;
 
         return $this;
     }

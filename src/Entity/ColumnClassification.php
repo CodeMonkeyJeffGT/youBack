@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,40 +19,30 @@ class ColumnClassification
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $column_id;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $f_id;
 
     /**
      * @ORM\Column(type="boolean")
      */
     private $removable;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Column", inversedBy="columnClassifications")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $column_owned;
+
+    public function __construct()
+    {
+        $this->columnClassifications = new ArrayCollection();
+        $this->sons = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getColumnId(): ?int
-    {
-        return $this->column_id;
-    }
-
-    public function setColumnId(int $column_id): self
-    {
-        $this->column_id = $column_id;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -65,18 +57,6 @@ class ColumnClassification
         return $this;
     }
 
-    public function getFId(): ?int
-    {
-        return $this->f_id;
-    }
-
-    public function setFId(int $f_id): self
-    {
-        $this->f_id = $f_id;
-
-        return $this;
-    }
-
     public function getRemovable(): ?bool
     {
         return $this->removable;
@@ -85,6 +65,18 @@ class ColumnClassification
     public function setRemovable(bool $removable): self
     {
         $this->removable = $removable;
+
+        return $this;
+    }
+
+    public function getColumnOwned(): ?column
+    {
+        return $this->column_owned;
+    }
+
+    public function setColumnOwned(?column $column_owned): self
+    {
+        $this->column_owned = $column_owned;
 
         return $this;
     }

@@ -19,40 +19,42 @@ class FollowUser
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $u_id;
+    private $user;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $f_id;
+    private $follow;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUId(): ?int
+    public function getUser(): ?user
     {
-        return $this->u_id;
+        return $this->user;
     }
 
-    public function setUId(int $u_id): self
+    public function setUser(?user $user): self
     {
-        $this->u_id = $u_id;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getFId(): ?int
+    public function getFollow(): ?user
     {
-        return $this->f_id;
+        return $this->follow;
     }
 
-    public function setFId(int $f_id): self
+    public function setFollow(?user $follow): self
     {
-        $this->f_id = $f_id;
+        $this->follow = $follow;
 
         return $this;
     }

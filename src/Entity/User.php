@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -52,14 +54,19 @@ class User
     private $created;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $school_id;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $last_password;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\School", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $school;
+
+    public function __construct()
+    {
+    }
 
     public function getId(): ?int
     {
@@ -150,18 +157,6 @@ class User
         return $this;
     }
 
-    public function getSchoolId(): ?int
-    {
-        return $this->school_id;
-    }
-
-    public function setSchoolId(int $school_id): self
-    {
-        $this->school_id = $school_id;
-
-        return $this;
-    }
-
     public function getLastPassword(): ?string
     {
         return $this->last_password;
@@ -173,4 +168,17 @@ class User
 
         return $this;
     }
+
+    public function getSchool(): ?school
+    {
+        return $this->school;
+    }
+
+    public function setSchool(?school $school): self
+    {
+        $this->school = $school;
+
+        return $this;
+    }
+
 }

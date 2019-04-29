@@ -21,30 +21,30 @@ class UserController extends Controller
             'schoolId' => array('type' => 'number'),
             'account' => array('type' => 'string'),
             'password' => array('type' => 'string'),
-            'signature' => array('type' => 'string'),
-            'others' => array('type' => 'array'),
+            static::TOKEN_NAME => array('type' => 'string', 'required' => false, 'default' => ''),
+            'others' => array('type' => 'array', 'required' => false, 'default' => array()),
         ));
         if ($checkRst !== static::OK) {
             return $this->error($checkRst);
         }
-        $className = $schoolService->getSchoolClassName($this->params['schoolId']);
-        if (false === $className) {
+        $school = $schoolService->getSchool($this->params['schoolId']);
+        if (false === $school) {
             return $this->error(static::ERROR, 'id为' . $this->params['schoolId'] . '的学校不存在，请勿修改程序');
         }
-        $school = $this->container->get('App\\Service\School\\School' . $className . 'Service');
-        $rst = $school->auth($this->params['account'], $this->params['password'], $this->params['signature'], $this->params['others']);
+        $schoolSer = $this->container->get('App\\Service\School\\School' . $school->getClassName() . 'Service');
+        $rst = $schoolSer->auth($this->params['account'], $this->params['password'], $this->params[static::TOKEN_NAME], $this->params['others']);
         if ($rst === false) {
             return $this->error(static::ERROR, '登录失败');
         }
-        $user = $userService->checkExist($this->params['account'], $this->params['schoolId']);
+        $user = $userService->checkExist($this->params['account'], $school);
         if (false === $user) {
-            $info = $school->info($rst);
-            $user = $userService->insert($this->params['account'], $this->params['schoolId'], $info['name'], $info['sex']);
+            $info = $schoolSer->info($rst);
+            $user = $userService->insert($this->params['account'], $school, $info['name'], $info['sex']);
         }
         $userService->updateLastPassword($user, md5($this->params['password']));
         $jwt = $this->encodeJwt(array(
             'id' => $user->getId(),
-            'signature' => $rst,
+            static::TOKEN_NAME => $rst,
         ));
         return $this->success($jwt);
 
@@ -53,15 +53,27 @@ class UserController extends Controller
     public function info(UserService $userService): JsonResponse
     {
         $checkRst = $this->checkParam('HEADER', array(
-            'signature' => array('type' => 'jwt', 'required' => false),
+            static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
         ));
         if ($checkRst !== static::OK) {
             return $this->error($checkRst);
         }
-        $user = $userService->getUser($this->params['signature']['id']);
+        $user = $userService->getUser($this->params[static::TOKEN_NAME]['id']);
         if (is_null($user)) {
             return $this->error(static::ERROR, '用户不存在');
         }
+        $user = array(
+            'id' => $user->getId(),
+            'nickname' => $user->getNickName(),
+            'sex' => $user->getSex(),
+            'headpic' => $user->getHeadpic(),
+            'sign' => $user->getSign(),
+            'created' => $user->getCreated()->format('Y-m-d H:i:s'),
+            'school' => array(
+                'id' => $user->getSchool()->getId(),
+                'name' => $user->getSchool()->getName(),
+            ),
+        );
         return $this->success($user);
     }
 
@@ -73,9 +85,21 @@ class UserController extends Controller
     public function othersInfo($id, UserService $userService): JsonResponse
     {
         $user = $userService->getUser($id);
-        if (is_null($user)) {
+        if (empty($user)) {
             return $this->error(static::ERROR, '用户不存在');
         }
+        $user = array(
+            'id' => $user->getId(),
+            'nickname' => $user->getNickName(),
+            'sex' => $user->getSex(),
+            'headpic' => $user->getHeadpic(),
+            'sign' => $user->getSign(),
+            'created' => $user->getCreated()->format('Y-m-d H:i:s'),
+            'school' => array(
+                'id' => $user->getSchool()->getId(),
+                'name' => $user->getSchool()->getName(),
+            ),
+        );
         return $this->success($user);
     }
 }

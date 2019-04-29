@@ -25,12 +25,12 @@ class SchoolRepository extends ServiceEntityRepository
         return $schools;
     }
 
-    public function getSchoolClassName($id)
+    public function getSchool($id)
     {
         $school = $this->find($id);
         if (is_null($school)) {
             return false;
         }
-        return $school->getClassName();
+        return $school;
     }
 }

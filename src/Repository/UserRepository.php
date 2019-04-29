@@ -19,12 +19,12 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function insert($account, $schoolId, $name, $sex)
+    public function insert($account, $school, $name, $sex)
     {
         $entityManager = $this->getEntityManager();
         $user = new User();
         $user->setAccount($account)
-            ->setSchoolId($schoolId)
+            ->setSchool($school)
             ->setName($name)
             ->setNickname($name)
             ->setSex($sex)
@@ -37,16 +37,12 @@ class UserRepository extends ServiceEntityRepository
         return $user;
     }
 
-    public function checkExist($account, $schoolId)
+    public function checkExist($account, $school)
     {
-        $user = $this->createQueryBuilder('u')
-            ->andWhere('u.account = :account')
-            ->andWhere('u.school_id = :school_id')
-            ->setParameter('account', $account)
-            ->setParameter('school_id', $schoolId)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $user = $this->findOneBy(array(
+            'account' => $account,
+            'school' => $school,
+        ));
         return is_null($user) ? false : $user;
     }
 
@@ -62,15 +58,5 @@ class UserRepository extends ServiceEntityRepository
     {
         $user = $this->find($id);
         return $user;
-    }
-
-    public function listUser($ids)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.id in (:ids)')
-            ->setParameter('ids', $ids)
-            ->getQuery()
-            ->getResult()
-        ;
     }
 }

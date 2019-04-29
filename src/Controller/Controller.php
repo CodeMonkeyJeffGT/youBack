@@ -32,6 +32,7 @@ abstract class Controller extends FrameController
     //程序开始时间
     protected $startTime;
 
+    //错误编码
     protected const OK = 0;
     protected const NOT_AUTH = 1;
     protected const ERROR = 2;
@@ -39,6 +40,9 @@ abstract class Controller extends FrameController
     protected const PARAM_MISS = 4;
     protected const INVALID_ARGUMENT = 5;
     protected const REDIRECT = 6;
+
+    //signature 名称
+    protected const TOKEN_NAME = 'signature';
     
     /**
      * 设置 request
@@ -150,7 +154,11 @@ abstract class Controller extends FrameController
             ) {
                 return static::PARAM_MISS;
             } else {
-                $tmpParams[$param] = $tmpParams[$param] ?? null;
+                $defualt = null;
+                if (isset($rule['default'])) {
+                    $default = $rule['default'];
+                }
+                $tmpParams[$param] = $tmpParams[$param] ?? $default;
             }
 
             if ( ! isset ($rule['type'])) {
@@ -159,14 +167,14 @@ abstract class Controller extends FrameController
 
             switch ($rule['type']) {
                 case 'number':
-                    if ( ! is_numeric($tmpParams[$param])) {
+                    if ( ! is_numeric($tmpParams[$param]) && ! is_null($tmpParams[$param])) {
                         return static::INVALID_ARGUMENT;
                     }
                     break;
                 case 'string':
                     break;
                 case 'array':
-                    if ( ! is_array($tmpParams[$param])) {
+                    if ( ! is_array($tmpParams[$param]) && ! is_null($tmpParams[$param])) {
                         return static::INVALID_ARGUMENT;
                     }
                     break;
