@@ -19,6 +19,31 @@ class PageRepository extends ServiceEntityRepository
         parent::__construct($registry, Page::class);
     }
 
+    public function changeClassToNullByClass($class)
+    {
+        $pages = $this->findBy(array(
+            'classification' => $class,
+        ));
+        $entityManager = $this->getEntityManager();
+        foreach ($pages as $value) {
+            $value->setClassification(null);
+            $entityManager->persist($value);
+        }
+        $entityManager->flush();
+    }
+
+    public function getNumber($column)
+    {
+        $qb = $this->createQueryBuilder('p');
+        return (int)$qb
+            ->andWhere('p.acolumn = :acolumn')
+            ->setParameter('acolumn', $column)
+            ->select($qb->expr()->count('p.id'))
+            ->getQuery()
+            ->getResult()[0][1]
+        ;
+    }
+
     // /**
     //  * @return Page[] Returns an array of Page objects
     //  */

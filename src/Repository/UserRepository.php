@@ -53,10 +53,4 @@ class UserRepository extends ServiceEntityRepository
         $entityManager->persist($user);
         $entityManager->flush();
     }
-
-    public function getUser($id)
-    {
-        $user = $this->find($id);
-        return $user;
-    }
 }

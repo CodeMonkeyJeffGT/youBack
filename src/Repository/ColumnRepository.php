@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Column;
+use App\Entity\Columns;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -16,12 +16,57 @@ class ColumnRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Column::class);
+        parent::__construct($registry, Columns::class);
     }
 
     public function listColumns($query, $lastId, $limit)
     {
-        return 1;
+        $tmp = $this->createQueryBuilder('c')
+            ->andWhere('c.name like :query')
+            ->setParameter('query', $query)
+            ->setMaxResults($limit)
+        ;
+        if ( ! empty($lastId)) {
+            $tmp->andWhere('c.id > :id')
+                ->setParameter('id', $lastId)
+            ;
+        }
+        return $tmp->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function searchByName($name)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.name = :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function apply($user, $name, $description)
+    {
+        $entityManager = $this->getEntityManager();
+        $column = new Columns();
+        $column->setName($name)
+            ->setDescription($description)
+            ->setCreated(new \DateTime('NOW'))
+            ->setType(2)
+            ->setOwner($user)
+        ;
+        $entityManager->persist($column);
+        $entityManager->flush();
+        return $column;
+    }
+
+    public function updateInfo($column, $description)
+    {
+        $entityManager = $this->getEntityManager();
+        $column->setDescription($description);
+        $entityManager->persist($column);
+        $entityManager->flush();
     }
 
     // /**

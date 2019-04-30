@@ -19,6 +19,36 @@ class ColumnClassificationRepository extends ServiceEntityRepository
         parent::__construct($registry, ColumnClassification::class);
     }
 
+    public function getClassifications($column)
+    {
+        return $this->findBy(array(
+            'column_owned' => $column,
+        ));
+    }
+
+    public function insArr($column, $ins)
+    {
+        $entityManager = $this->getEntityManager();
+        foreach ($ins as $value) {
+            $classification = new ColumnClassification();
+            $classification->setColumnOwned($column)
+                ->setName($value)
+                ->setRemovable(true)
+            ;
+            $entityManager->persist($classification);
+        }
+        $entityManager->flush();
+    }
+
+    public function delArr($column, $del)
+    {
+        $entityManager = $this->getEntityManager();
+        foreach ($del as $value) {
+            $entityManager->remove($value);
+        }
+        $entityManager->flush();
+    }
+
     // /**
     //  * @return ColumnClassification[] Returns an array of ColumnClassification objects
     //  */

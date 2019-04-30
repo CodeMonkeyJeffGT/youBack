@@ -29,7 +29,7 @@ class ColumnClassification
     private $removable;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Column", inversedBy="columnClassifications")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Columns", inversedBy="columnClassifications")
      * @ORM\JoinColumn(nullable=false)
      */
     private $column_owned;
@@ -69,12 +69,12 @@ class ColumnClassification
         return $this;
     }
 
-    public function getColumnOwned(): ?column
+    public function getColumnOwned(): ?columns
     {
         return $this->column_owned;
     }
 
-    public function setColumnOwned(?column $column_owned): self
+    public function setColumnOwned(?columns $column_owned): self
     {
         $this->column_owned = $column_owned;
 

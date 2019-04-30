@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ColumnRepository")
  */
-class Column
+class Columns
 {
     /**
      * @ORM\Id()
@@ -89,6 +89,7 @@ class Column
         return $this->type;
     }
 
+    //0：学校 1:官方 2:普通
     public function setType(int $type): self
     {
         $this->type = $type;

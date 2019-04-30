@@ -23,7 +23,7 @@ class FollowColumn
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Column", inversedBy="followColumns")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Columns", inversedBy="followColumns")
      * @ORM\JoinColumn(nullable=false)
      */
     private $acolumn;

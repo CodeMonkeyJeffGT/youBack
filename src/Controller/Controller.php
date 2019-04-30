@@ -91,7 +91,7 @@ abstract class Controller extends FrameController
             'alg' => 'HS256',
             'typ' => 'jwt',
         );
-        $payload['expire'] = time() + 3600;
+        $payload['expire'] = time() + 8640000;
         $code = base64_encode(json_encode($header)) . '.' . base64_encode(json_encode($payload));
         $code .= '.' . hash('sha256', $code);
         return $code;
@@ -154,7 +154,7 @@ abstract class Controller extends FrameController
             ) {
                 return static::PARAM_MISS;
             } else {
-                $defualt = null;
+                $default = null;
                 if (isset($rule['default'])) {
                     $default = $rule['default'];
                 }

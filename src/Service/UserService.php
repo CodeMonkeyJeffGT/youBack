@@ -15,7 +15,7 @@ class UserService
 
     public function getUser($id)
     {
-        return $this->userDb->getUser($id);
+        return $this->userDb->find($id);
     }
 
     public function checkExist($account, $schoolId)

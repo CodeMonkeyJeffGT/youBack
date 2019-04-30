@@ -19,6 +19,18 @@ class FollowColumnRepository extends ServiceEntityRepository
         parent::__construct($registry, FollowColumn::class);
     }
 
+    public function getFollowNumber($column)
+    {
+        $qb = $this->createQueryBuilder('f');
+        return (int)$qb
+            ->andWhere('f.acolumn = :acolumn')
+            ->setParameter('acolumn', $column)
+            ->select($qb->expr()->count('f.id'))
+            ->getQuery()
+            ->getResult()[0][1]
+        ;
+    }
+
     // /**
     //  * @return FollowColumn[] Returns an array of FollowColumn objects
     //  */

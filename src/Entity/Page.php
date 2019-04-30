@@ -38,14 +38,13 @@ class Page
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Column")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Columns")
      * @ORM\JoinColumn(nullable=false)
      */
     private $acolumn;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ColumnClassification")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $classification;
 
