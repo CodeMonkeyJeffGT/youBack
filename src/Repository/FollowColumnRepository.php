@@ -31,6 +31,42 @@ class FollowColumnRepository extends ServiceEntityRepository
         ;
     }
 
+    public function follows($user)
+    {
+        return $this->findBy(array(
+            'user' => $user,
+        ));
+    }
+
+    public function checkFollow($user, $column)
+    {
+        $followColumn = $this->findOneBy(array(
+            'user' => $user,
+            'acolumn' => $column,
+        ));
+        return $followColumn ?? false;
+    }
+
+    public function follow($user, $column)
+    {
+        $entityManager = $this->getEntityManager();
+        $followColumn = new followColumn();
+        $followColumn
+            ->setUser($user)
+            ->setAcolumn($column)
+        ;
+        $entityManager->persist($followColumn);
+        $entityManager->flush();
+        return $followColumn;
+    }
+
+    public function unfollow($followColumn)
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($followColumn);
+        $entityManager->flush();
+    }
+
     // /**
     //  * @return FollowColumn[] Returns an array of FollowColumn objects
     //  */

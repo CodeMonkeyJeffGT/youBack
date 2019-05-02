@@ -58,7 +58,7 @@ class ColumnController extends Controller
     {
         $columnObj = $columnService->getColumn($id);
         if (empty($columnObj)) {
-            return $this->error(static::ERROR, '论坛不存在');
+            return $this->error(static::ERROR, '版块不存在');
         }
         $classifications = $columnClassificationService->getClassifications($columnObj);
         foreach ($classifications as $key => $value) {
@@ -172,7 +172,7 @@ class ColumnController extends Controller
         }
         $columnObj = $columnService->getColumn($id);
         if (empty($columnObj)) {
-            return $this->error(static::ERROR, '论坛不存在');
+            return $this->error(static::ERROR, '版块不存在');
         }
         if ($columnObj->getOwner()->getId() !== $user->getId()) {
             return $this->error(static::FORBIDEN);

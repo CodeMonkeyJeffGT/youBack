@@ -81,16 +81,16 @@ column-info-update:
 #关注版块列表
 column-follow-list:
     path: /api/v1/columnFollows
-    controller: App\Controller\FollowColumnController::followList
+    controller: App\Controller\FollowColumnController::list
     methods: GET
 #关注版块
 column-follow:
-    path: /api/v1/columnFollows
+    path: /api/v1/columnFollows/{id}
     controller: App\Controller\FollowColumnController::follow
     methods: POST
 #取消关注版块
 column-unollow:
-    path: /api/v1/columnFollows
+    path: /api/v1/columnFollows/{id}
     controller: App\Controller\FollowColumnController::unfollow
     methods: DELETE
 #关注版块数量
@@ -100,7 +100,7 @@ column-follow-number:
     methods: GET
 #他人关注版块数量
 column-follow-number-others:
-    path: /api/v1/columnFollowNumbers
+    path: /api/v1/columnFollowNumbers/{id}
     controller: App\Controller\FollowColumnController::othersNumber
     methods: GET
 #帖子 ----------------------------------------------------------

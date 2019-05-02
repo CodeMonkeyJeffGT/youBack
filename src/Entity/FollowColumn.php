@@ -45,12 +45,12 @@ class FollowColumn
         return $this;
     }
 
-    public function getAcolumn(): ?column
+    public function getAcolumn(): ?columns
     {
         return $this->acolumn;
     }
 
-    public function setAcolumn(?column $acolumn): self
+    public function setAcolumn(?columns $acolumn): self
     {
         $this->acolumn = $acolumn;
 
