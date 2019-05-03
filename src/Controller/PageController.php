@@ -17,8 +17,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class PageController extends Controller
 {
-    public function list(PageService $pageService, ColumnService $columnService, ColumnClassificationService $columnClassificationService, LikePageService $likePageService, PageCommentService $pageCommentService, PageCollectService $pageCollectService): JsonResponse
+    public function list(PageService $pageService, UserService $userService, ColumnService $columnService, ColumnClassificationService $columnClassificationService, LikePageService $likePageService, PageCommentService $pageCommentService, PageCollectService $pageCollectService): JsonResponse
     {
+        $checkRst = $this->checkParam('HEADER', array(
+            static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
+        ));
+        if ($checkRst !== static::OK) {
+            return $this->error($checkRst);
+        }
+        $user = $userService->getUser($this->params[static::TOKEN_NAME]['id']);
+        if (is_null($user)) {
+            return $this->error(static::ERROR, '用户不存在');
+        }
         $this->checkParam('GET', array(
             'columnId' => array('type' => 'number', 'required' => false, 'default' => null),
             'classId' => array('type' => 'number', 'required' => false, 'default' => null),
@@ -66,6 +76,7 @@ class PageController extends Controller
                 ),
                 'column' => $value->getAcolumn()->getId(),
                 'created' => $value->getCreated()->format('Y-m-d H:i:s'),
+                'isLike' => $likePageService->checkLike($value, $user),
                 'likeNum' => $likePageService->getNumber($value),
                 'commentNum' => $pageCommentService->getNumber($value),
                 'collectNum' => $pageCollectService->getNumber($value),

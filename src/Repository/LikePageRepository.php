@@ -31,6 +31,36 @@ class LikePageRepository extends ServiceEntityRepository
         ;
     }
 
+    public function checkLike($user, $page): ?LikePage
+    {
+        $likePage = $this->findOneBy(array(
+            'user' => $user,
+            'page' => $page,
+        ));
+        return $likePage;
+    }
+
+    public function likePage($user, $page): ?likePage
+    {
+
+        $entityManager = $this->getEntityManager();
+        $likePage = new LikePage();
+        $likePage
+            ->setUser($user)
+            ->setPage($page)
+        ;
+        $entityManager->persist($likePage);
+        $entityManager->flush();
+        return $likePage;
+    }
+
+    public function unlikePage($likePage)
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($likePage);
+        $entityManager->flush();
+    }
+
     // /**
     //  * @return LikePage[] Returns an array of LikePage objects
     //  */

@@ -122,18 +122,18 @@ page-delete:
 #点赞帖子 -----------------——————-------------------------------
 #获取点赞数量
 page-like-number:
-    path: /api/v1/pages/{id}/likes/
-    controller: App\Controller\PageLikeController::number
+    path: /api/v1/pages/{pid}/likes/
+    controller: App\Controller\LikePageController::number
     methods: GET
 #点赞帖子
 page-like:
-    path: /api/v1/pages/{id}/likes/
-    controller: App\Controller\PageLikeController::like
+    path: /api/v1/pages/{pid}/likes/
+    controller: App\Controller\LikePageController::like
     methods: POST
 #取消点赞帖子
 page-unlike:
-    path: /api/v1/page/{id}/likes/
-    controller: App\Controller\PageLikeController::unlike
+    path: /api/v1/pages/{pid}/likes/
+    controller: App\Controller\LikePageController::unlike
     methods: DELETE
 #评论帖子 -----------------——————-------------------------------
 #评论列表

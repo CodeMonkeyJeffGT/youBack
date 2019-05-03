@@ -17,4 +17,29 @@ class LikePageService
     {
         return $this->likePageDb->getNumber($page);
     }
+
+    public function checkLike($user, $page)
+    {
+        return ( ! empty($this->likePageDb->checkLike($user, $page)));
+    }
+
+    public function like($user, $page): bool
+    {
+        $likePage = $this->likePageDb->checkLike($user, $page);
+        if ( ! empty($likePage)) {
+            return false;
+        }
+        $this->likePageDb->likePage($user, $page);
+        return true;
+    }
+
+    public function unlike($user, $page): bool
+    {
+        $likePage = $this->likePageDb->checkLike($user, $page);
+        if (empty($likePage)) {
+            return false;
+        }
+        $this->likePageDb->unlikePage($likePage);
+        return true;
+    }
 }
