@@ -19,7 +19,7 @@ class FollowColumnRepository extends ServiceEntityRepository
         parent::__construct($registry, FollowColumn::class);
     }
 
-    public function getFollowNumber($column)
+    public function getFollowNumber($column): int
     {
         $qb = $this->createQueryBuilder('f');
         return (int)$qb
@@ -31,7 +31,7 @@ class FollowColumnRepository extends ServiceEntityRepository
         ;
     }
 
-    public function follows($user)
+    public function follows($user): array
     {
         return $this->findBy(array(
             'user' => $user,
@@ -47,7 +47,7 @@ class FollowColumnRepository extends ServiceEntityRepository
         return $followColumn ?? false;
     }
 
-    public function follow($user, $column)
+    public function follow($user, $column): ?FollowColumn
     {
         $entityManager = $this->getEntityManager();
         $followColumn = new followColumn();

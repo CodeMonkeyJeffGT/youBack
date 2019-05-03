@@ -16,7 +16,7 @@ class FollowUserService
         $this->userDb = $this->entityManager->getRepository(User::class);
     }
 
-    public function list($user)
+    public function list($user): array
     {
         $follows = $this->followUserDb->follows($user);
         $followed = $this->followUserDb->followed($user);
@@ -32,7 +32,7 @@ class FollowUserService
         );
     }
 
-    public function number($user)
+    public function number($user): array
     {
         $followsNum = count($this->followUserDb->follows($user));
         $followedNum = count($this->followUserDb->followed($user));
@@ -42,7 +42,7 @@ class FollowUserService
         );
     }
 
-    public function follow($user, $follow)
+    public function follow($user, $follow): bool
     {
         if ($this->followUserDb->checkFollow($user, $follow)) {
             return false;
@@ -51,7 +51,7 @@ class FollowUserService
         return true;
     }
 
-    public function unFollow($user, $follow)
+    public function unFollow($user, $follow): bool
     {
         $followUser = $this->followUserDb->checkFollow($user, $follow);
         if ($followUser === false) {

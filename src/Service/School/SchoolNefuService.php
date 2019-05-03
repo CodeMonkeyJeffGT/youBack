@@ -49,7 +49,7 @@ class SchoolNefuService implements SchoolDefaultInterface
      * 
      * @return array
      */
-    public function info(string $signature)
+    public function info(string $signature): array
     {
         $signature = json_decode($signature, true);
         $nefuer = new Nefuer();

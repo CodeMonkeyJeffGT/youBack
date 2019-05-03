@@ -19,6 +19,18 @@ class LikePageRepository extends ServiceEntityRepository
         parent::__construct($registry, LikePage::class);
     }
 
+    public function getNumber($page): int
+    {
+        $qb = $this->createQueryBuilder('l');
+        return (int)$qb
+            ->andWhere('l.page = :page')
+            ->setParameter('page', $page)
+            ->select($qb->expr()->count('l.id'))
+            ->getQuery()
+            ->getResult()[0][1]
+        ;
+    }
+
     // /**
     //  * @return LikePage[] Returns an array of LikePage objects
     //  */

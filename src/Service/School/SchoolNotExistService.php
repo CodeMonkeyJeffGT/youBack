@@ -42,7 +42,7 @@ class SchoolNotExistService implements SchoolDefaultInterface
      * 
      * @return array
      */
-    public function info(string $signature)
+    public function info(string $signature): array
     {
         return array(
             'name' => $signature,

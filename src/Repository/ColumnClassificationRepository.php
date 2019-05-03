@@ -19,7 +19,7 @@ class ColumnClassificationRepository extends ServiceEntityRepository
         parent::__construct($registry, ColumnClassification::class);
     }
 
-    public function getClassifications($column)
+    public function getClassifications($column): array
     {
         return $this->findBy(array(
             'column_owned' => $column,

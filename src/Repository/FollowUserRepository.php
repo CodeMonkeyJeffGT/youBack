@@ -19,14 +19,14 @@ class FollowUserRepository extends ServiceEntityRepository
         parent::__construct($registry, FollowUser::class);
     }
 
-    public function follows($user)
+    public function follows($user): array
     {
         return $this->findBy(array(
             'user' => $user,
         ));
     }
 
-    public function followed($user)
+    public function followed($user): array
     {
         return $this->findBy(array(
             'follow' => $user,
@@ -42,7 +42,7 @@ class FollowUserRepository extends ServiceEntityRepository
         return $followUser ?? false;
     }
 
-    public function follow($user, $follow)
+    public function follow($user, $follow): ?FollowUser
     {
         $entityManager = $this->getEntityManager();
         $followUser = new FollowUser();

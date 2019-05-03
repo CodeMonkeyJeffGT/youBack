@@ -19,7 +19,7 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function insert($account, $school, $name, $sex)
+    public function insert($account, $school, $name, $sex): User
     {
         $entityManager = $this->getEntityManager();
         $user = new User();
@@ -37,7 +37,7 @@ class UserRepository extends ServiceEntityRepository
         return $user;
     }
 
-    public function checkExist($account, $school)
+    public function checkExist($account, $school): ?User
     {
         $user = $this->findOneBy(array(
             'account' => $account,
@@ -46,11 +46,12 @@ class UserRepository extends ServiceEntityRepository
         return is_null($user) ? false : $user;
     }
 
-    public function updateLastPassword($user, $password)
+    public function updateLastPassword($user, $password): User
     {
         $entityManager = $this->getEntityManager();
         $user->setLastPassword($password);
         $entityManager->persist($user);
         $entityManager->flush();
+        return $user;
     }
 }

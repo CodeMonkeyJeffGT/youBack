@@ -19,7 +19,7 @@ class ColumnRepository extends ServiceEntityRepository
         parent::__construct($registry, Columns::class);
     }
 
-    public function listColumns($query, $lastId, $limit)
+    public function listColumns($query, $lastId, $limit): array
     {
         $tmp = $this->createQueryBuilder('c')
             ->andWhere('c.name like :query')
@@ -36,7 +36,7 @@ class ColumnRepository extends ServiceEntityRepository
         ;
     }
 
-    public function searchByName($name)
+    public function searchByName($name): ?Columns
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.name = :name')
@@ -46,7 +46,7 @@ class ColumnRepository extends ServiceEntityRepository
         ;
     }
 
-    public function apply($user, $name, $description)
+    public function apply($user, $name, $description): ?Columns
     {
         $entityManager = $this->getEntityManager();
         $column = new Columns();
@@ -61,12 +61,13 @@ class ColumnRepository extends ServiceEntityRepository
         return $column;
     }
 
-    public function updateInfo($column, $description)
+    public function updateInfo($column, $description): Columns
     {
         $entityManager = $this->getEntityManager();
         $column->setDescription($description);
         $entityManager->persist($column);
         $entityManager->flush();
+        return $column;
     }
 
     // /**

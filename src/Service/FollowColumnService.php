@@ -13,12 +13,12 @@ class FollowColumnService
         $this->followColumnDb = $this->entityManager->getRepository(FollowColumn::class);
     }
 
-    public function getFollowNumber($column)
+    public function getFollowNumber($column): int
     {
         return $this->followColumnDb->getFollowNumber($column);
     }
     
-    public function list($user)
+    public function list($user): array
     {
         $follows = $this->followColumnDb->follows($user);
         foreach ($follows as $key => $value) {
@@ -27,7 +27,7 @@ class FollowColumnService
         return $follows;
     }
 
-    public function follow($user, $column)
+    public function follow($user, $column): bool
     {
         if ($this->followColumnDb->checkFollow($user, $column)) {
             return false;
@@ -36,7 +36,7 @@ class FollowColumnService
         return true;
     }
 
-    public function unfollow($user, $column)
+    public function unfollow($user, $column): bool
     {
         $followColumn = $this->followColumnDb->checkFollow($user, $column);
         if ($followColumn === false) {
@@ -46,7 +46,7 @@ class FollowColumnService
         return true;
     }
 
-    public function number($user)
+    public function number($user): int
     {
         $followsNum = count($this->followColumnDb->follows($user));
         return $followsNum;

@@ -13,8 +13,41 @@ class PageService
         $this->pageDb = $this->entityManager->getRepository(Page::class);
     }
 
-    public function getNumber($column)
+    public function getNumber($column): int
     {
         return $this->pageDb->getNumber($column);
+    }
+
+    public function getPage($id): ?Page
+    {
+        $page = $this->pageDb->find($id);
+        return $page;
+    }
+
+    public function list($column, $class, $query, $lastId, $limit): array
+    {
+        if ($query !== '') {
+            $arr = array();
+            for ($i = 0, $len = mb_strlen($query); $i < $len; $i++)
+            {
+                $arr[] = mb_substr($query, $i, 1);
+            }
+            $query = '%' . implode('%', $arr) . '%';
+        }
+        if ($query === '') {
+            $query = '%';
+        }
+        $columns = $this->pageDb->listPages($column, $class, $query, $lastId, $limit);
+        return $columns;
+    }
+
+    public function publish($user, $column, $columnClass, $name, $content): Page
+    {
+        return $this->pageDb->publish($user, $column, $columnClass, $name, $content);
+    }
+
+    public function delete($page)
+    {
+        $this->pageDb->deletePage($page);
     }
 }

@@ -101,12 +101,12 @@ class Page
         return $this;
     }
 
-    public function getAcolumn(): ?Column
+    public function getAcolumn(): ?Columns
     {
         return $this->acolumn;
     }
 
-    public function setAcolumn(?Column $acolumn): self
+    public function setAcolumn(?Columns $acolumn): self
     {
         $this->acolumn = $acolumn;
 

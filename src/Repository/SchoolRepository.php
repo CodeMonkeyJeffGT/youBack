@@ -19,13 +19,13 @@ class SchoolRepository extends ServiceEntityRepository
         parent::__construct($registry, School::class);
     }
 
-    public function list()
+    public function list(): array
     {
         $schools = $this->findAll();
         return $schools;
     }
 
-    public function getSchool($id)
+    public function getSchool($id): ?School
     {
         $school = $this->find($id);
         if (is_null($school)) {

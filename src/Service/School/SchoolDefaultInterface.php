@@ -29,7 +29,7 @@ interface SchoolDefaultInterface
      * 
      * @return array
      */
-    public function info(string $signature);
+    public function info(string $signature): array;
     
     /**
      * 获取成绩
@@ -38,7 +38,7 @@ interface SchoolDefaultInterface
      * 
      * @return array
      */
-    public function getScore(string $signature, array $opts = array());
+    public function getScore(string $signature, array $opts = array()): array;
     
     /**
      * 获取课表
@@ -47,7 +47,7 @@ interface SchoolDefaultInterface
      * 
      * @return array
      */
-    public function getLesson(string $signature, array $opts = array());
+    public function getLesson(string $signature, array $opts = array()): array;
 
     /**
      * 获取考试
@@ -56,6 +56,6 @@ interface SchoolDefaultInterface
      * 
      * @return array
      */
-    public function getExam(string $signature, array $opts = array());
+    public function getExam(string $signature, array $opts = array()): array;
 
 }

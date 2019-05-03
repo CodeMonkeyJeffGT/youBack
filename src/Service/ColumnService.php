@@ -19,19 +19,19 @@ class ColumnService
         $this->followColumnDb = $this->entityManager->getRepository(FollowColumn::class);
     }
     
-    public function getColumn($id)
+    public function getColumn($id): ?Columns
     {
         $column = $this->columnDb->find($id);
         return $column;
     }
 
-    public function list($query = '', $lastId = 0, $limit = 20)
+    public function list($query = '', $lastId = 0, $limit = 20): array
     {
         if ($query !== '') {
             $arr = array();
             for ($i = 0, $len = mb_strlen($query); $i < $len; $i++)
             {
-                $arr[] = mbsubstr($query, $i, 1);
+                $arr[] = mb_substr($query, $i, 1);
             }
             $query = '%' . implode('%', $arr) . '%';
         }
@@ -50,7 +50,7 @@ class ColumnService
         return $this->columnDb->apply($user, $name, $description);
     }
 
-    public function updateInfo($column, $description)
+    public function updateInfo($column, $description): Columns
     {
         return $this->columnDb->updateInfo($column, $description);
     }

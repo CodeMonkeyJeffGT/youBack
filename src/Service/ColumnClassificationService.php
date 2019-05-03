@@ -14,7 +14,13 @@ class ColumnClassificationService
         $this->pageDb = $this->entityManager->getRepository(Page::class);
     }
 
-    public function getClassifications($column)
+    public function getClass($id): ?ColumnClassification
+    {
+        $class = $this->columnClassification->find($id);
+        return $class;
+    }
+
+    public function getClassifications($column): array
     {
         return $this->columnClassificationDb->getClassifications($column);
     }

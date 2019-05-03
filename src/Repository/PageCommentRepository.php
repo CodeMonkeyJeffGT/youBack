@@ -19,6 +19,18 @@ class PageCommentRepository extends ServiceEntityRepository
         parent::__construct($registry, PageComment::class);
     }
 
+    public function getNumber($page): int
+    {
+        $qb = $this->createQueryBuilder('p');
+        return (int)$qb
+            ->andWhere('p.page = :page')
+            ->setParameter('page', $page)
+            ->select($qb->expr()->count('p.id'))
+            ->getQuery()
+            ->getResult()[0][1]
+        ;
+    }
+
     // /**
     //  * @return PageComment[] Returns an array of PageComment objects
     //  */

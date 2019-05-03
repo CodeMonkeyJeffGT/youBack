@@ -95,7 +95,7 @@ column-unollow:
     methods: DELETE
 #关注版块数量
 column-follow-number:
-    path: /api/v1/columnFollowNumbers
+    path: /api/v1/columnFollowNumbers 
     controller: App\Controller\FollowColumnController::number
     methods: GET
 #他人关注版块数量
@@ -116,7 +116,7 @@ page-publish:
     methods: POST
 #删除帖子
 page-delete:
-    path: /api/v1/pages/
+    path: /api/v1/pages/{id}
     controller: App\Controller\PageController::delete
     methods: DELETE
 #点赞帖子 -----------------——————-------------------------------

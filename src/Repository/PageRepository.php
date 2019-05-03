@@ -32,7 +32,7 @@ class PageRepository extends ServiceEntityRepository
         $entityManager->flush();
     }
 
-    public function getNumber($column)
+    public function getNumber($column): int
     {
         $qb = $this->createQueryBuilder('p');
         return (int)$qb
@@ -42,6 +42,63 @@ class PageRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()[0][1]
         ;
+    }
+
+    public function listPages($column, $class, $query, $lastId, $limit): array
+    {
+        $tmp = $this->createQueryBuilder('p')
+            ->andWhere('p.name like :query')
+            ->setParameter('query', $query)
+            ->setMaxResults($limit)
+        ;
+        if ( ! empty($column)) {
+            $tmp->andWhere('p.acolumn = :column')
+                ->setParameter('column', $column)
+            ;
+        } elseif ($column === 0) {
+            $tmp->andWhere('p.acolumn IS NULL')
+            ;
+        }
+        if ( ! empty($column)) {
+            $tmp->andWhere('p.classification = :class')
+                ->setParameter('class', $class)
+            ;
+        } elseif ($class === 0) {
+            $tmp->andWhere('p.classification IS NULL')
+            ;
+        }
+        if ( ! empty($lastId)) {
+            $tmp->andWhere('p.id > :id')
+                ->setParameter('id', $lastId)
+            ;
+        }
+        return $tmp->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function publish($user, $column, $columnClass, $name, $content): Page
+    {
+        $entityManager = $this->getEntityManager();
+        $page = new Page();
+        $page->setName($name)
+            ->setUser($user)
+            ->setAcolumn($column)
+            ->setClassification($columnClass)
+            ->setName($name)
+            ->setContent($content)
+            ->setCreated(new \DateTime('NOW'))
+        ;
+        $entityManager->persist($page);
+        $entityManager->flush();
+        return $page;
+    }
+
+    public function deletePage($page)
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($page);
+        $entityManager->flush();
     }
 
     // /**

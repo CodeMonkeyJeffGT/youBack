@@ -13,13 +13,13 @@ class SchoolService
         $this->schoolDb = $this->entityManager->getRepository(School::class);
     }
 
-    public function list()
+    public function list(): array
     {
         $schools = $this->schoolDb->list();
         return $schools;
     }
 
-    public function getSchool($id)
+    public function getSchool($id): ?School
     {
         $school = $this->schoolDb->getSchool($id);
         return $school;
