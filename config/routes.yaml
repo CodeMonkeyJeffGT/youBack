@@ -138,25 +138,20 @@ page-unlike:
 #评论帖子 -----------------——————-------------------------------
 #评论列表
 page-comment-list:
-    path: /api/v1/pages/{id}/comments/
+    path: /api/v1/pages/{pid}/comments/
     controller: App\Controller\PageCommentController::list
     methods: GET
 #评论帖子
 page-comment:
-    path: /api/v1/pages/{id}/comments/
+    path: /api/v1/pages/{pid}/comments/
     controller: App\Controller\PageCommentController::publish
     methods: POST
 #删除评论
 page-comment-delete:
-    path: /api/v1/pages/{id}/comments/
+    path: /api/v1/pages/{pid}/comments/{cid}
     controller: App\Controller\PageCommentController::delete
     methods: DELETE
-#评论数量
-page-comment-number:
-    path: /api/v1/pages/{id}/commentNumbers
-    controller: App\Controller\PageCommentController::number
-    methods: GET
-#点赞评论 -----------------——————-------------------------------
+#点赞评论 -----------------——————------------------------------- #todo
 #帖子点赞数量
 page-comment-like-number:
     path: /api/v1/commentLikes/{id}

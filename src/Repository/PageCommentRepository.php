@@ -31,6 +31,37 @@ class PageCommentRepository extends ServiceEntityRepository
         ;
     }
 
+    public function list($page): array
+    {
+        $list = $this->findBy(array(
+            'page' => $page,
+        ));
+        return $list;
+    }
+
+    public function publish($user, $page, $content, $reply, $father): PageComment
+    {
+        $entityManager = $this->getEntityManager();
+        $pageComment = new PageComment();
+        $pageComment->setPage($page)
+            ->setUser($user)
+            ->setContent($content)
+            ->setReply($reply)
+            ->setFather($father)
+            ->setCreated(new \DateTime('NOW'))
+        ;
+        $entityManager->persist($pageComment);
+        $entityManager->flush();
+        return $pageComment;
+    }
+
+    public function deleteComment($pageComment)
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($pageComment);
+        $entityManager->flush();
+    }
+
     // /**
     //  * @return PageComment[] Returns an array of PageComment objects
     //  */

@@ -13,14 +13,28 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class LikePageController extends Controller
 {
-    public function number($pid, LikePageService $likePageService, PageService $pageService): JsonResponse
+    public function number($pid, LikePageService $likePageService, UserService $userService, PageService $pageService): JsonResponse
     {
+        $checkRst = $this->checkParam('HEADER', array(
+            static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
+        ));
+        if ($checkRst !== static::OK) {
+            return $this->error($checkRst);
+        }
+        $user = $userService->getUser($this->params[static::TOKEN_NAME]['id']);
+        if (is_null($user)) {
+            return $this->error(static::ERROR, '用户不存在');
+        }
         $page = $pageService->getPage($pid);
         if (empty($page)) {
             return $this->error(static::ERROR, '动态不存在');
         }
+        $isLike = ( ! empty($likePageService->checkLike($page, $user)));
         $number = $likePageService->getNumber($page);
-        return $this->success($number);
+        return $this->success(array(
+            'number' => $number,
+            'isLike' => $isLike,
+        ));
     }
 
     public function like($pid, LikePageService $likePageService, UserService $userService, PageService $pageService): JsonResponse

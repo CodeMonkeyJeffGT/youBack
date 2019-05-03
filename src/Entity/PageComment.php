@@ -44,9 +44,9 @@ class PageComment
     private $father;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\PageComment")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
      */
-    private $back;
+    private $reply;
 
     public function getId(): ?int
     {
@@ -113,14 +113,14 @@ class PageComment
         return $this;
     }
 
-    public function getBack(): ?self
+    public function getReply(): ?user
     {
-        return $this->back;
+        return $this->reply;
     }
 
-    public function setBack(?self $back): self
+    public function setReply(?user $reply): self
     {
-        $this->back = $back;
+        $this->reply = $reply;
 
         return $this;
     }

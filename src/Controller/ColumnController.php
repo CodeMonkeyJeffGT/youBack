@@ -89,6 +89,7 @@ class ColumnController extends Controller
             'followNum' => $followColumnService->getFollowNumber($columnObj),
             'pageNum' => $pageService->getNumber($columnObj),
             'classification' => $classifications,
+            'school' => null,
         );
         if ( ! is_null($columnObj->getSchool())) {
             $column['school'] = array(
@@ -141,6 +142,7 @@ class ColumnController extends Controller
                 ),
             ),
             'followNum' => $followColumnService->getFollowNumber($columnObj),
+            'school' => null,
         );
         if ( ! is_null($columnObj->getSchool())) {
             $column['school'] = array(

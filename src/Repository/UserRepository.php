@@ -43,7 +43,7 @@ class UserRepository extends ServiceEntityRepository
             'account' => $account,
             'school' => $school,
         ));
-        return is_null($user) ? false : $user;
+        return $user;
     }
 
     public function updateLastPassword($user, $password): User

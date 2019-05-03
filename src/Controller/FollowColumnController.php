@@ -46,6 +46,7 @@ class FollowColumnController extends Controller
                     ),
                 ),
                 'followNum' => $followColumnService->getFollowNumber($value),
+                'school' => null,
             );
             if ( ! is_null($value->getSchool())) {
                 $columns[$key]['school'] = array(

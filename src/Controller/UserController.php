@@ -37,7 +37,7 @@ class UserController extends Controller
             return $this->error(static::ERROR, '登录失败');
         }
         $user = $userService->checkExist($this->params['account'], $school);
-        if (false === $user) {
+        if (empty($user)) {
             $info = $schoolSer->info($rst);
             $user = $userService->insert($this->params['account'], $school, $info['name'], $info['sex']);
         }
