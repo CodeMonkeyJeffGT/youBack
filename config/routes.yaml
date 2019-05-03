@@ -167,34 +167,29 @@ page-comment-unlike:
     path: /api/v1/comments/{cid}/likes/
     controller: App\Controller\LikeCommentController::unlike
     methods: DELETE
-#收藏帖子 -----------------——————-------------------------------4 36 #todo 45-32=13
+#收藏帖子 -----------------——————-------------------------------3 35
 #收藏帖子列表
 page-collect-list:
-    path: /api/v1/pages/{id}/collects/
-    controller: App\Controller\PageCollectController::list
+    path: /api/v1/collectsPage/
+    controller: App\Controller\CollectPageController::list
     methods: GET
 #收藏帖子
 page-collect:
-    path: /api/v1/pages/{id}/collects/
-    controller: App\Controller\PageCollectController::collect
+    path: /api/v1/pages/{pid}/collect/
+    controller: App\Controller\CollectPageController::collect
     methods: POST
 #取消收藏帖子
 page-uncollect:
-    path: /api/v1/pages/{id}/collects/
-    controller: App\Controller\PageCollectController::uncollect
+    path: /api/v1/pages/{pid}/collect/
+    controller: App\Controller\CollectPageController::uncollect
     methods: DELETE
-#收藏帖子数量
-page-collect-number:
-    path: /api/v1/pages/{id}/collectNumbers
-    controller: App\Controller\PageCollectController::number
-    methods: GET
-#举报 ---------------------——————-------------------------------1 37
+#举报 ---------------------——————-------------------------------1 36 #todo 45-35=10
 #举报（帖子/评论）
 page-report:
-    path: /api/v1/pages/{id}/reports/
+    path: /api/v1/reports/{id}/
     controller: App\Controller\PageReportController::report
     methods: POST
-#消息 ----------------------------------------------------------2 39
+#消息 ----------------------------------------------------------2 38
 #获取消息列表
 message-list:
     path: /api/v1/messages/
@@ -205,7 +200,7 @@ message-send:
     path: /api/v1/messages/
     controller: App\Controller\MessageController::send
     methods: POST
-#功能 ----------------------------------------------------------6 45
+#功能 ----------------------------------------------------------6 44
 #获取功能菜单
 menu:
     path: /api/v1/menus/

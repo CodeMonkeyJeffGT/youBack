@@ -7,7 +7,7 @@ use App\Service\ColumnService;
 use App\Service\ColumnClassificationService;
 use App\Service\LikePageService;
 use App\Service\PageCommentService;
-use App\Service\PageCollectService;
+use App\Service\CollectPageService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class PageController extends Controller
 {
-    public function list(PageService $pageService, UserService $userService, ColumnService $columnService, ColumnClassificationService $columnClassificationService, LikePageService $likePageService, PageCommentService $pageCommentService, PageCollectService $pageCollectService): JsonResponse
+    public function list(PageService $pageService, UserService $userService, ColumnService $columnService, ColumnClassificationService $columnClassificationService, LikePageService $likePageService, PageCommentService $pageCommentService, CollectPageService $collectPageService): JsonResponse
     {
         $checkRst = $this->checkParam('HEADER', array(
             static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
@@ -83,7 +83,7 @@ class PageController extends Controller
                 'isLike' => ( ! empty($likePageService->checkLike($user, $value))),
                 'likeNum' => $likePageService->getNumber($value),
                 'commentNum' => $pageCommentService->getNumber($value),
-                'collectNum' => $pageCollectService->getNumber($value),
+                'collectNum' => $collectPageService->getNumber($value),
             );
         }
         return $this->success($pages);
