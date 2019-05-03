@@ -19,6 +19,48 @@ class LikeCommentRepository extends ServiceEntityRepository
         parent::__construct($registry, LikeComment::class);
     }
 
+    public function getNumber($comment): int
+    {
+        $qb = $this->createQueryBuilder('l');
+        return (int)$qb
+            ->andWhere('l.comment = :comment')
+            ->setParameter('comment', $comment)
+            ->select($qb->expr()->count('l.id'))
+            ->getQuery()
+            ->getResult()[0][1]
+        ;
+    }
+
+    public function checkLike($user, $comment): ?LikeComment
+    {
+        $likeComment = $this->findOneBy(array(
+            'user' => $user,
+            'comment' => $comment,
+        ));
+        return $likeComment;
+    }
+
+    public function likeComment($user, $comment): ?likeComment
+    {
+
+        $entityManager = $this->getEntityManager();
+        $likeComment = new LikeComment();
+        $likeComment
+            ->setUser($user)
+            ->setComment($comment)
+        ;
+        $entityManager->persist($likeComment);
+        $entityManager->flush();
+        return $likeComment;
+    }
+
+    public function unlikeComment($likeComment)
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($likeComment);
+        $entityManager->flush();
+    }
+
     // /**
     //  * @return LikeComment[] Returns an array of LikeComment objects
     //  */

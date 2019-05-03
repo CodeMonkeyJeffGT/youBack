@@ -2,8 +2,8 @@
 namespace App\Controller;
 
 use App\Service\UserService;
-use App\Service\LikePageService;
-use App\Service\PageService;
+use App\Service\LikeCommentService;
+use App\Service\PageCommentService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  * 
  * @method JsonResponse list(SchoolService $schoolService)
  */
-class LikePageController extends Controller
+class LikeCommentController extends Controller
 {
-    public function number($pid, LikePageService $likePageService, UserService $userService, PageService $pageService): JsonResponse
+    public function number($cid, LikeCommentService $likeCommentService, UserService $userService, PageCommentService $pageCommentService): JsonResponse
     {
         $checkRst = $this->checkParam('HEADER', array(
             static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
@@ -25,19 +25,19 @@ class LikePageController extends Controller
         if (is_null($user)) {
             return $this->error(static::ERROR, '用户不存在');
         }
-        $page = $pageService->getPage($pid);
-        if (empty($page)) {
+        $comment = $pageCommentService->getComment($cid);
+        if (empty($comment)) {
             return $this->error(static::ERROR, '动态不存在');
         }
-        $isLike = ( ! empty($likePageService->checkLike($user, $page)));
-        $number = $likePageService->getNumber($page);
+        $isLike = ( ! empty($likeCommentService->checkLike($user, $comment)));
+        $number = $likeCommentService->getNumber($comment);
         return $this->success(array(
             'number' => $number,
             'isLike' => $isLike,
         ));
     }
 
-    public function like($pid, LikePageService $likePageService, UserService $userService, PageService $pageService): JsonResponse
+    public function like($cid, LikeCommentService $likeCommentService, UserService $userService, PageCommentService $pageCommentService): JsonResponse
     {
         $checkRst = $this->checkParam('HEADER', array(
             static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
@@ -49,15 +49,15 @@ class LikePageController extends Controller
         if (is_null($user)) {
             return $this->error(static::ERROR, '用户不存在');
         }
-        $page = $pageService->getPage($pid);
-        if (empty($page)) {
+        $comment = $pageCommentService->getComment($cid);
+        if (empty($comment)) {
             return $this->error(static::ERROR, '动态不存在');
         }
-        $rst = $likePageService->like($user, $page);
+        $rst = $likeCommentService->like($user, $comment);
         return $rst ? $this->success() : $this->error(static::ERROR, '点赞失败');
     }
 
-    public function unlike($pid, LikePageService $likePageService, UserService $userService, PageService $pageService): JsonResponse
+    public function unlike($cid, LikeCommentService $likeCommentService, UserService $userService, PageCommentService $pageCommentService): JsonResponse
     {
         $checkRst = $this->checkParam('HEADER', array(
             static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
@@ -69,11 +69,11 @@ class LikePageController extends Controller
         if (is_null($user)) {
             return $this->error(static::ERROR, '用户不存在');
         }
-        $page = $pageService->getPage($pid);
-        if (empty($page)) {
+        $comment = $pageCommentService->getComment($cid);
+        if (empty($comment)) {
             return $this->error(static::ERROR, '动态不存在');
         }
-        $rst = $likePageService->unlike($user, $page);
+        $rst = $likeCommentService->unlike($user, $comment);
         return $rst ? $this->success() : $this->error(static::ERROR, '取消点赞失败');
     }
 }

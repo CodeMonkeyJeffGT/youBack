@@ -80,7 +80,7 @@ class PageController extends Controller
                     'type' => $value->getAcolumn()->getType(),
                 ),
                 'created' => $value->getCreated()->format('Y-m-d H:i:s'),
-                'isLike' => ( ! empty($likePageService->checkLike($value, $user))),
+                'isLike' => ( ! empty($likePageService->checkLike($user, $value))),
                 'likeNum' => $likePageService->getNumber($value),
                 'commentNum' => $pageCommentService->getNumber($value),
                 'collectNum' => $pageCollectService->getNumber($value),

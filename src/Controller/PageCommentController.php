@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Service\PageCommentService;
 use App\Service\PageService;
 use App\Service\UserService;
+use App\Service\LikeCommentService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class PageCommentController extends Controller
 {
-    public function list($pid, PageCommentService $pageCommentService, PageService $pageService): JsonResponse
+    public function list($pid, PageCommentService $pageCommentService, PageService $pageService, LikeCommentService $likeCommentService): JsonResponse
     {
         $page = $pageService->getPage($pid);
         if (empty($page)) {
@@ -40,17 +41,18 @@ class PageCommentController extends Controller
                 ),
                 'reply' => null,
                 'father' => null,
+                'like' => $likeCommentService->getNumber($value),
             );
-            if ( ! is_null($value->getReply())) {
-                $comments[$key]['reply'] = array(
-                    'id' => $value->getReply()->getId(),
-                    'nickname' => $value->getReply()->getNickName(),
-                );
-            }
             if ( ! is_null($value->getFather())) {
                 $comments[$key]['father'] = array(
                     'id' => $value->getFather()->getId(),
                 );
+                if ( ! is_null($value->getReply())) {
+                    $comments[$key]['reply'] = array(
+                        'id' => $value->getReply()->getId(),
+                        'nickname' => $value->getReply()->getNickName(),
+                    );
+                }
             }
         }
         return $this->success($comments);
@@ -80,15 +82,21 @@ class PageCommentController extends Controller
         if (empty($page)) {
             return $this->error(static::ERROR, '动态不存在');
         }
-        $reply = $this->params['reply'];
-        if ( ! is_null($reply)) {
-            $reply = $userService->getUser($this->params['reply']);
-        }
+        $reply = null;
         $father = $this->params['father'];
         if ( ! is_null($father)) {
             $father = $pageCommentService->getComment($this->params['father']);
+            $reply = $this->params['reply'];
+            if ( ! is_null($reply)) {
+                $reply = $userService->getUser($this->params['reply']);
+            }
         }
         $comment = $pageCommentService->publish($user, $page, $this->params['content'], $reply, $father);
+        $comment = array(
+            'id' => $comment->getId(),
+            'content' => $comment->getContent(),
+            'created' => $comment->getCreated()->format('Y-m-d H:i:s'),
+        );
         return $this->success($comment);
     }
 
