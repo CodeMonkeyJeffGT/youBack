@@ -183,12 +183,17 @@ page-uncollect:
     path: /api/v1/pages/{pid}/collect/
     controller: App\Controller\CollectPageController::uncollect
     methods: DELETE
-#举报 ---------------------——————-------------------------------1 36 #todo 45-35=10
-#举报（帖子/评论）
-page-report:
-    path: /api/v1/reports/{id}/
-    controller: App\Controller\PageReportController::report
-    methods: POST
+#举报 ---------------------——————-------------------------------1 36
+# #举报帖子
+# page-report:
+#     path: /api/v1/pages/{id}/reports/
+#     controller: App\Controller\ReportController::reportPage
+#     methods: POST
+# #举报评论
+# comment-report:
+#     path: /api/v1/comments/{id}/reports/
+#     controller: App\Controller\ReportController::reportComment
+#     methods: POST
 #消息 ----------------------------------------------------------2 38
 #获取消息列表
 message-list:
