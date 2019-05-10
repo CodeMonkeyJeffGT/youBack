@@ -26,7 +26,7 @@ class SchoolController extends Controller
     public function getNeeds($id, SchoolService $schoolService): JsonResponse
     {
         $school = $schoolService->getSchool($id);
-        if (false === $school) {
+        if (is_null($school)) {
             return $this->error(static::ERROR, 'id为' . $id . '的学校不存在，请勿修改程序');
         }
         $school = $this->container->get('App\\Service\School\\School' . $school->getClassName() . 'Service');

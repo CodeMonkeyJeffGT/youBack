@@ -28,9 +28,6 @@ class SchoolRepository extends ServiceEntityRepository
     public function getSchool($id): ?School
     {
         $school = $this->find($id);
-        if (is_null($school)) {
-            return false;
-        }
         return $school;
     }
 }

@@ -28,7 +28,7 @@ class UserController extends Controller
             return $this->error($checkRst);
         }
         $school = $schoolService->getSchool($this->params['schoolId']);
-        if (false === $school) {
+        if (is_null($school)) {
             return $this->error(static::ERROR, 'id为' . $this->params['schoolId'] . '的学校不存在，请勿修改程序');
         }
         $schoolSer = $this->container->get('App\\Service\School\\School' . $school->getClassName() . 'Service');
@@ -101,5 +101,33 @@ class UserController extends Controller
             ),
         );
         return $this->success($user);
+    }
+
+    public function search(UserService $userService): JsonResponse
+    {
+        $checkRst = $this->checkParam('GET', array(
+            'query' => array('type' => 'string', 'required' => false, 'default' => ''),
+            'lastId' => array('type' => 'number', 'required' => false, 'default' => 0),
+            'limit' => array('type' => 'number', 'required' => false, 'default' => 20),
+        ));
+        if ($checkRst !== static::OK) {
+            return $this->error($checkRst);
+        }
+        $users = $userService->search($this->params['query'], $this->params['lastId'], $this->params['limit']);
+        foreach ($users as $key => $value) {
+            $users[$key] = array(
+                'id' => $value->getId(),
+                'nickname' => $value->getNickName(),
+                'sex' => $value->getSex(),
+                'headpic' => $value->getHeadpic(),
+                'sign' => $value->getSign(),
+                'created' => $value->getCreated()->format('Y-m-d H:i:s'),
+                'school' => array(
+                    'id' => $value->getSchool()->getId(),
+                    'name' => $value->getSchool()->getName(),
+                ),
+            );
+        }
+        return $this->success($users);
     }
 }

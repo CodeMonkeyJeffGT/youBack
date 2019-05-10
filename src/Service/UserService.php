@@ -32,4 +32,21 @@ class UserService
     {
         return $this->userDb->updateLastPassword($user, $password);
     }
+
+    public function search($query, $lastId, $limit): array
+    {
+        if ($query !== '') {
+            $arr = array();
+            for ($i = 0, $len = mb_strlen($query); $i < $len; $i++)
+            {
+                $arr[] = mb_substr($query, $i, 1);
+            }
+            $query = '%' . implode('%', $arr) . '%';
+        }
+        if ($query === '') {
+            $query = '%';
+        }
+        $users = $this->userDb->listUsers($query, $lastId, $limit);
+        return $users;
+    }
 }

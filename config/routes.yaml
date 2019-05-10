@@ -30,6 +30,11 @@ user-info-others:
     path: /api/v1/users/{id}
     controller: App\Controller\UserController::othersInfo
     methods: GET
+#搜索用户
+user-search:
+    path: /api/v1/searchUsers
+    controller: App\Controller\UserController::search
+    methods: GET
 #关注 ----------------------------------------------------------5 11
 #查看关注/粉丝列表
 user-follow-list:

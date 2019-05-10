@@ -54,4 +54,21 @@ class UserRepository extends ServiceEntityRepository
         $entityManager->flush();
         return $user;
     }
+
+    public function listUsers($query, $lastId, $limit): array
+    {
+        $tmp = $this->createQueryBuilder('u')
+            ->andWhere('u.nickname like :query')
+            ->setParameter('query', $query)
+            ->setMaxResults($limit)
+        ;
+        if ( ! empty($lastId)) {
+            $tmp->andWhere('u.id > :id')
+                ->setParameter('id', $lastId)
+            ;
+        }
+        return $tmp->getQuery()
+            ->getResult()
+        ;
+    }
 }
