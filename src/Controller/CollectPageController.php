@@ -52,7 +52,7 @@ class CollectPageController extends Controller
                 ),
                 'created' => $value->getPage()->getCreated()->format('Y-m-d H:i:s'),
                 'isLike' => $likePageService->checkLike($user, $value->getPage()),
-                'isCollect' => $collectPageService->checkCollect($user, $value),
+                'isCollect' => $collectPageService->checkCollect($user, $value->getPage()),
                 'likeNum' => $likePageService->getNumber($value->getPage()),
                 'commentNum' => $pageCommentService->getNumber($value->getPage()),
                 'collectNum' => $collectPageService->getNumber($value->getPage()),
