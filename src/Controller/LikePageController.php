@@ -29,7 +29,7 @@ class LikePageController extends Controller
         if (empty($page)) {
             return $this->error(static::ERROR, '动态不存在');
         }
-        $isLike = ( ! empty($likePageService->checkLike($user, $page)));
+        $isLike = $likePageService->checkLike($user, $page);
         $number = $likePageService->getNumber($page);
         return $this->success(array(
             'number' => $number,

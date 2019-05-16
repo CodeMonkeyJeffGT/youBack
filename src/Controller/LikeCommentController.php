@@ -29,7 +29,7 @@ class LikeCommentController extends Controller
         if (empty($comment)) {
             return $this->error(static::ERROR, '动态不存在');
         }
-        $isLike = ( ! empty($likeCommentService->checkLike($user, $comment)));
+        $isLike = $likeCommentService->checkLike($user, $comment);
         $number = $likeCommentService->getNumber($comment);
         return $this->success(array(
             'number' => $number,
