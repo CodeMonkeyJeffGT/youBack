@@ -38,7 +38,7 @@ user-search:
 #关注 ----------------------------------------------------------5 11
 #查看关注/粉丝列表
 user-follow-list:
-    path: /api/v1/userFollows/
+    path: /api/v1/userFollows
     controller: App\Controller\FollowUserController::list
     methods: GET
 #关注
@@ -64,7 +64,7 @@ user-follow-number-others:
 #论坛 ----------------------------------------------------------4 15
 #版块列表
 column-list:
-    path: /api/v1/columns/
+    path: /api/v1/columns
     controller: App\Controller\ColumnController::list
     methods: GET
 #版块信息
@@ -74,7 +74,7 @@ column-info:
     methods: GET
 #版块申请
 column-apply:
-    path: /api/v1/columns/
+    path: /api/v1/columns
     controller: App\Controller\ColumnController::apply
     methods: POST
 #编辑版块信息
@@ -111,12 +111,12 @@ column-follow-number-others:
 #帖子 ----------------------------------------------------------3 23
 #帖子列表
 page-list:
-    path: /api/v1/pages/
+    path: /api/v1/pages
     controller: App\Controller\PageController::list
     methods: GET
 #发布帖子
 page-publish:
-    path: /api/v1/pages/
+    path: /api/v1/pages
     controller: App\Controller\PageController::publish
     methods: POST
 #删除帖子
@@ -127,28 +127,28 @@ page-delete:
 #点赞帖子 -----------------——————-------------------------------3 26
 #获取点赞数量
 page-like-number:
-    path: /api/v1/pages/{pid}/likes/
+    path: /api/v1/pages/{pid}/likes
     controller: App\Controller\LikePageController::number
     methods: GET
 #点赞帖子
 page-like:
-    path: /api/v1/pages/{pid}/likes/
+    path: /api/v1/pages/{pid}/likes
     controller: App\Controller\LikePageController::like
     methods: POST
 #取消点赞帖子
 page-unlike:
-    path: /api/v1/pages/{pid}/likes/
+    path: /api/v1/pages/{pid}/likes
     controller: App\Controller\LikePageController::unlike
     methods: DELETE
 #评论帖子 -----------------——————-------------------------------3 29
 #评论列表
 page-comment-list:
-    path: /api/v1/pages/{pid}/comments/
+    path: /api/v1/pages/{pid}/comments
     controller: App\Controller\PageCommentController::list
     methods: GET
 #评论帖子
 page-comment:
-    path: /api/v1/pages/{pid}/comments/
+    path: /api/v1/pages/{pid}/comments
     controller: App\Controller\PageCommentController::publish
     methods: POST
 #删除评论
@@ -159,85 +159,85 @@ page-comment-delete:
 #点赞评论 -----------------——————-------------------------------3 32
 #评论点赞数量
 page-comment-like-number:
-    path: /api/v1/comments/{cid}/likes/
+    path: /api/v1/comments/{cid}/likes
     controller: App\Controller\LikeCommentController::number
     methods: GET
 #点赞评论
 page-comment-like:
-    path: /api/v1/comments/{cid}/likes/
+    path: /api/v1/comments/{cid}/likes
     controller: App\Controller\LikeCommentController::like
     methods: POST
 #取消点赞评论
 page-comment-unlike:
-    path: /api/v1/comments/{cid}/likes/
+    path: /api/v1/comments/{cid}/likes
     controller: App\Controller\LikeCommentController::unlike
     methods: DELETE
 #收藏帖子 -----------------——————-------------------------------3 35
 #收藏帖子列表
 page-collect-list:
-    path: /api/v1/collectsPage/
+    path: /api/v1/collectsPage
     controller: App\Controller\CollectPageController::list
     methods: GET
 #收藏帖子
 page-collect:
-    path: /api/v1/pages/{pid}/collect/
+    path: /api/v1/pages/{pid}/collect
     controller: App\Controller\CollectPageController::collect
     methods: POST
 #取消收藏帖子
 page-uncollect:
-    path: /api/v1/pages/{pid}/collect/
+    path: /api/v1/pages/{pid}/collect
     controller: App\Controller\CollectPageController::uncollect
     methods: DELETE
 #举报 ---------------------——————-------------------------------1 36
 # #举报帖子
 # page-report:
-#     path: /api/v1/pages/{id}/reports/
+#     path: /api/v1/pages/{id}/reports
 #     controller: App\Controller\ReportController::reportPage
 #     methods: POST
 # #举报评论
 # comment-report:
-#     path: /api/v1/comments/{id}/reports/
+#     path: /api/v1/comments/{id}/reports
 #     controller: App\Controller\ReportController::reportComment
 #     methods: POST
 #消息 ----------------------------------------------------------2 38
 #获取消息列表
 message-list:
-    path: /api/v1/messages/
+    path: /api/v1/messages
     controller: App\Controller\MessageController::list
     methods: GET
 #发消息
 message-send:
-    path: /api/v1/messages/
+    path: /api/v1/messages
     controller: App\Controller\MessageController::send
     methods: POST
 #功能 ----------------------------------------------------------6 44
 #获取功能菜单
 menu:
-    path: /api/v1/menus/
+    path: /api/v1/menus
     controller: App\Controller\MenuController::index
     methods: GET
 #更新菜单排列/显示
 menu-update:
-    path: /api/v1/menus/
+    path: /api/v1/menus
     controller: App\Controller\MenuController::updateMenu
     methods: PUT
 #查成绩
 score:
-    path: /api/v1/scores/
+    path: /api/v1/scores
     controller: App\Controller\ScoreController::index
     methods: GET
 #查课表
 lesson:
-    path: /api/v1/lessons/
+    path: /api/v1/lessons
     controller: App\Controller\LessonController::index
     methods: GET
 #查考试
 exam:
-    path: /api/v1/exams/
+    path: /api/v1/exams
     controller: App\Controller\ExamController::index
     methods: GET
 #四六级
 cet:
-    path: /api/v1/cets/
+    path: /api/v1/cets
     controller: App\Controller\CetController::index
     methods: GET
