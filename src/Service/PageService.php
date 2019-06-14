@@ -26,7 +26,7 @@ class PageService
 
     public function userPages($user, $lastId, $limit): array
     {
-        $pages = $this->pagesDb->listUserPages($user, $lastId, $limit);
+        $pages = $this->pageDb->listUserPages($user, $lastId, $limit);
         return $pages;
     }
 
