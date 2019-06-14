@@ -130,7 +130,7 @@ page-user-mine:
     controller: App\Controller\PageController::mine
     methods: GET
 #他人帖子
-page-user-mine:
+page-user-others:
     path: /api/v1/userPages/{uid}
     controller: App\Controller\PageController::others
     methods: GET
