@@ -44,6 +44,23 @@ class PageRepository extends ServiceEntityRepository
         ;
     }
 
+    public function listUserPages($user, $lastId, $limit): array
+    {
+        $tmp = $this->createQueryBuilder('p')
+            ->andWhere('p.user = :user')
+            ->setParameter('user', $user)
+            ->setMaxResults($limit)
+        ;
+        if ( ! empty($lastId)) {
+            $tmp->andWhere('p.id > :id')
+                ->setParameter('id', $lastId)
+            ;
+        }
+        return $tmp->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function listPages($column, $class, $query, $lastId, $limit): array
     {
         $tmp = $this->createQueryBuilder('p')

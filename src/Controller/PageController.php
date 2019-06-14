@@ -17,6 +17,100 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class PageController extends Controller
 {
+    public function others($uid, PageService $pageService, UserService $userService, ColumnService $columnService, ColumnClassificationService $columnClassificationService, LikePageService $likePageService, PageCommentService $pageCommentService, CollectPageService $collectPageService): JsonResponse
+    {
+        $checkRst = $this->checkParam('HEADER', array(
+            static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
+        ));
+        if ($checkRst !== static::OK) {
+            return $this->error($checkRst);
+        }
+        $this->checkParam('GET', array(
+            'lastId' => array('type' => 'number', 'required' => false, 'default' => 0),
+            'limit' => array('type' => 'number', 'required' => false, 'default' => 20),
+        ));
+        $user = $userService->getUser($uid);
+        $pages = $pageService->userPages($user, $this->params['lastId'], $this->params['limit']);
+        foreach ($pages as $key => $value) {
+            $pages[$key] = array(
+                'id' => $value->getId(),
+                'name' => $value->getName(),
+                'content' => $value->getContent(),
+                'user' => array(
+                    'id' => $value->getUser()->getId(),
+                    'nickname' => $value->getUser()->getNickName(),
+                    'sex' => $value->getUser()->getSex(),
+                    'headpic' => $value->getUser()->getHeadpic(),
+                    'sign' => $value->getUser()->getSign(),
+                    'created' => $value->getUser()->getCreated()->format('Y-m-d H:i:s'),
+                    'school' => array(
+                        'id' => $value->getUser()->getSchool()->getId(),
+                        'name' => $value->getUser()->getSchool()->getName(),
+                    ),
+                ),
+                'column' => array(
+                    'name' => $value->getAcolumn()->getName(),
+                    'id' => $value->getAcolumn()->getId(),
+                    'type' => $value->getAcolumn()->getType(),
+                ),
+                'created' => $value->getCreated()->format('Y-m-d H:i:s'),
+                'isLike' => $likePageService->checkLike($user, $value),
+                'isCollect' => $collectPageService->checkCollect($user, $value),
+                'likeNum' => $likePageService->getNumber($value),
+                'commentNum' => $pageCommentService->getNumber($value),
+                'collectNum' => $collectPageService->getNumber($value),
+            );
+        }
+        return $this->success($pages);
+    }
+
+    public function mine(PageService $pageService, UserService $userService, ColumnService $columnService, ColumnClassificationService $columnClassificationService, LikePageService $likePageService, PageCommentService $pageCommentService, CollectPageService $collectPageService): JsonResponse
+    {
+        $checkRst = $this->checkParam('HEADER', array(
+            static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
+        ));
+        if ($checkRst !== static::OK) {
+            return $this->error($checkRst);
+        }
+        $this->checkParam('GET', array(
+            'lastId' => array('type' => 'number', 'required' => false, 'default' => 0),
+            'limit' => array('type' => 'number', 'required' => false, 'default' => 20),
+        ));
+        $user = $userService->getUser($this->params[static::TOKEN_NAME]['id']);
+        $pages = $pageService->userPages($user, $this->params['lastId'], $this->params['limit']);
+        foreach ($pages as $key => $value) {
+            $pages[$key] = array(
+                'id' => $value->getId(),
+                'name' => $value->getName(),
+                'content' => $value->getContent(),
+                'user' => array(
+                    'id' => $value->getUser()->getId(),
+                    'nickname' => $value->getUser()->getNickName(),
+                    'sex' => $value->getUser()->getSex(),
+                    'headpic' => $value->getUser()->getHeadpic(),
+                    'sign' => $value->getUser()->getSign(),
+                    'created' => $value->getUser()->getCreated()->format('Y-m-d H:i:s'),
+                    'school' => array(
+                        'id' => $value->getUser()->getSchool()->getId(),
+                        'name' => $value->getUser()->getSchool()->getName(),
+                    ),
+                ),
+                'column' => array(
+                    'name' => $value->getAcolumn()->getName(),
+                    'id' => $value->getAcolumn()->getId(),
+                    'type' => $value->getAcolumn()->getType(),
+                ),
+                'created' => $value->getCreated()->format('Y-m-d H:i:s'),
+                'isLike' => $likePageService->checkLike($user, $value),
+                'isCollect' => $collectPageService->checkCollect($user, $value),
+                'likeNum' => $likePageService->getNumber($value),
+                'commentNum' => $pageCommentService->getNumber($value),
+                'collectNum' => $collectPageService->getNumber($value),
+            );
+        }
+        return $this->success($pages);
+    }
+
     public function list(PageService $pageService, UserService $userService, ColumnService $columnService, ColumnClassificationService $columnClassificationService, LikePageService $likePageService, PageCommentService $pageCommentService, CollectPageService $collectPageService): JsonResponse
     {
         $checkRst = $this->checkParam('HEADER', array(

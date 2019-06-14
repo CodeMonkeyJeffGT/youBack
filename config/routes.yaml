@@ -1,4 +1,4 @@
-#学校 ----------------------------------------------------------2 2
+#学校 ----------------------------------------------------------
 #查看学校列表
 school-list:
     path: /api/v1/schools
@@ -9,7 +9,7 @@ school-needs:
     path: /api/v1/schools/{id}
     controller: App\Controller\SchoolController::getNeeds
     methods: GET
-#用户 ----------------------------------------------------------4 6
+#用户 ----------------------------------------------------------
 #登录
 user-auth:
     path: /api/v1/userAuth
@@ -35,7 +35,7 @@ user-search:
     path: /api/v1/searchUsers
     controller: App\Controller\UserController::search
     methods: GET
-#关注 ----------------------------------------------------------5 11
+#关注 ----------------------------------------------------------
 #查看关注/粉丝列表
 user-follow-list:
     path: /api/v1/userFollows
@@ -61,7 +61,7 @@ user-follow-number-others:
     path: /api/v1/userFollowNumbers/{id}
     controller: App\Controller\FollowUserController::othersNumber
     methods: GET
-#论坛 ----------------------------------------------------------4 15
+#论坛 ----------------------------------------------------------
 #版块列表
 column-list:
     path: /api/v1/columns
@@ -82,7 +82,7 @@ column-info-update:
     path: /api/v1/columns/{id}
     controller: App\Controller\ColumnController::updateInfo
     methods: PUT
-#关注版块 --------------------------------------------------------5 20
+#关注版块 --------------------------------------------------------
 #关注版块列表
 column-follow-list:
     path: /api/v1/columnFollows
@@ -108,7 +108,7 @@ column-follow-number-others:
     path: /api/v1/columnFollowNumbers/{id}
     controller: App\Controller\FollowColumnController::othersNumber
     methods: GET
-#帖子 ----------------------------------------------------------3 23
+#帖子 ----------------------------------------------------------
 #帖子列表
 page-list:
     path: /api/v1/pages
@@ -124,7 +124,17 @@ page-delete:
     path: /api/v1/pages/{id}
     controller: App\Controller\PageController::delete
     methods: DELETE
-#点赞帖子 -----------------——————-------------------------------3 26
+#用户个人帖子
+page-user-mine:
+    path: /api/v1/userPages
+    controller: App\Controller\PageController::mine
+    methods: GET
+#他人帖子
+page-user-mine:
+    path: /api/v1/userPages/{uid}
+    controller: App\Controller\PageController::others
+    methods: GET
+#点赞帖子 -----------------——————-------------------------------
 #获取点赞数量
 page-like-number:
     path: /api/v1/pages/{pid}/likes
@@ -140,7 +150,7 @@ page-unlike:
     path: /api/v1/pages/{pid}/likes
     controller: App\Controller\LikePageController::unlike
     methods: DELETE
-#评论帖子 -----------------——————-------------------------------3 29
+#评论帖子 -----------------——————-------------------------------
 #评论列表
 page-comment-list:
     path: /api/v1/pages/{pid}/comments
@@ -156,7 +166,7 @@ page-comment-delete:
     path: /api/v1/pages/{pid}/comments/{cid}
     controller: App\Controller\PageCommentController::delete
     methods: DELETE
-#点赞评论 -----------------——————-------------------------------3 32
+#点赞评论 -----------------——————-------------------------------
 #评论点赞数量
 page-comment-like-number:
     path: /api/v1/comments/{cid}/likes
@@ -172,7 +182,7 @@ page-comment-unlike:
     path: /api/v1/comments/{cid}/likes
     controller: App\Controller\LikeCommentController::unlike
     methods: DELETE
-#收藏帖子 -----------------——————-------------------------------3 35
+#收藏帖子 -----------------——————-------------------------------
 #收藏帖子列表
 page-collect-list:
     path: /api/v1/collectsPage
@@ -188,7 +198,7 @@ page-uncollect:
     path: /api/v1/pages/{pid}/collect
     controller: App\Controller\CollectPageController::uncollect
     methods: DELETE
-#举报 ---------------------——————-------------------------------1 36
+#举报 ---------------------——————-------------------------------
 # #举报帖子
 # page-report:
 #     path: /api/v1/pages/{id}/reports
@@ -199,7 +209,7 @@ page-uncollect:
 #     path: /api/v1/comments/{id}/reports
 #     controller: App\Controller\ReportController::reportComment
 #     methods: POST
-#消息 ----------------------------------------------------------2 38
+#消息 ----------------------------------------------------------
 #获取消息列表
 message-list:
     path: /api/v1/messages
@@ -210,7 +220,7 @@ message-send:
     path: /api/v1/messages
     controller: App\Controller\MessageController::send
     methods: POST
-#功能 ----------------------------------------------------------6 44
+#功能 ----------------------------------------------------------
 #获取功能菜单
 menu:
     path: /api/v1/menus

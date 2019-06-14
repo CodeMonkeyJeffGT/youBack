@@ -24,6 +24,12 @@ class PageService
         return $page;
     }
 
+    public function userPages($user, $lastId, $limit): array
+    {
+        $pages = $this->pagesDb->listUserPages($user, $lastId, $limit);
+        return $pages;
+    }
+
     public function list($column, $class, $query, $lastId, $limit): array
     {
         if ($query !== '') {
@@ -37,8 +43,8 @@ class PageService
         if ($query === '') {
             $query = '%';
         }
-        $columns = $this->pageDb->listPages($column, $class, $query, $lastId, $limit);
-        return $columns;
+        $pages = $this->pageDb->listPages($column, $class, $query, $lastId, $limit);
+        return $pages;
     }
 
     public function publish($user, $column, $columnClass, $name, $content): Page
