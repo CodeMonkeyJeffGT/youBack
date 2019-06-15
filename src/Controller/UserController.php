@@ -51,7 +51,7 @@ class UserController extends Controller
 
     }
 
-    public function info(UserService $userService, FollowUserService $followUserService): JsonResponse
+    public function info(UserService $userService): JsonResponse
     {
         $checkRst = $this->checkParam('HEADER', array(
             static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
@@ -83,7 +83,7 @@ class UserController extends Controller
         //todo
     }
 
-    public function othersInfo($id, UserService $userService): JsonResponse
+    public function othersInfo($id, UserService $userService, FollowUserService $followUserService): JsonResponse
     {
         $checkRst = $this->checkParam('HEADER', array(
             static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
@@ -109,6 +109,7 @@ class UserController extends Controller
             ),
             'isFollowed' => $followUserService->checkFollow($user, $me),
             'isFollows' => $followUserService->checkFollow($me, $user),
+            'isMe' => $user->getId() == $me->getId(),
         );
         return $this->success($user);
     }
