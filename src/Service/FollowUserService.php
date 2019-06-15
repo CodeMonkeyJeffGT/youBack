@@ -34,7 +34,7 @@ class FollowUserService
 
     public function checkFollow($user, $follow): bool
     {
-        return $this->followUserDb->checkFollow($user, $follow);
+        return ! is_null($this->followUserDb->checkFollow($user, $follow));
     }
 
     public function number($user): array
