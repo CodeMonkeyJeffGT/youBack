@@ -32,6 +32,11 @@ class FollowUserService
         );
     }
 
+    public function checkFollow($user, $follow): bool
+    {
+        return $this->followUserDb->checkFollow($user, $follow);
+    }
+
     public function number($user): array
     {
         $followsNum = count($this->followUserDb->follows($user));

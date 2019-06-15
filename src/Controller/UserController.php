@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Service\UserService;
+use App\Service\FollowUserService;
 use App\Service\SchoolService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -50,7 +51,7 @@ class UserController extends Controller
 
     }
 
-    public function info(UserService $userService): JsonResponse
+    public function info(UserService $userService, FollowUserService $followUserService): JsonResponse
     {
         $checkRst = $this->checkParam('HEADER', array(
             static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
@@ -84,6 +85,13 @@ class UserController extends Controller
 
     public function othersInfo($id, UserService $userService): JsonResponse
     {
+        $checkRst = $this->checkParam('HEADER', array(
+            static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
+        ));
+        if ($checkRst !== static::OK) {
+            return $this->error($checkRst);
+        }
+        $me = $userService->getUser($this->params[static::TOKEN_NAME]['id']);
         $user = $userService->getUser($id);
         if (empty($user)) {
             return $this->error(static::ERROR, '用户不存在');
@@ -99,6 +107,8 @@ class UserController extends Controller
                 'id' => $user->getSchool()->getId(),
                 'name' => $user->getSchool()->getName(),
             ),
+            'isFollowed' => $followUserService->checkFollow($user, $me),
+            'isFollows' => $followUserService->checkFollow($me, $user),
         );
         return $this->success($user);
     }
