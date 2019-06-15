@@ -111,7 +111,7 @@ class PageController extends Controller
         return $this->success($pages);
     }
 
-    public function info(PageService $pageService, UserService $userService, ColumnService $columnService, ColumnClassificationService $columnClassificationService, LikePageService $likePageService, PageCommentService $pageCommentService, CollectPageService $collectPageService): JsonResponse
+    public function info($id, PageService $pageService, UserService $userService, ColumnService $columnService, ColumnClassificationService $columnClassificationService, LikePageService $likePageService, PageCommentService $pageCommentService, CollectPageService $collectPageService): JsonResponse
     {
         $checkRst = $this->checkParam('HEADER', array(
             static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
@@ -123,13 +123,7 @@ class PageController extends Controller
         if (is_null($user)) {
             return $this->error(static::ERROR, '用户不存在');
         }
-        $checkRst = $this->checkParam('GET', array(
-            'id' => array('type' => 'number'),
-        ));
-        if ($checkRst !== static::OK) {
-            return $this->error($checkRst);
-        }
-        $page = $pageService->info($this->params['id']);
+        $page = $pageService->info($id);
         $page = array(
             'id' => $page->getId(),
             'name' => $page->getName(),
