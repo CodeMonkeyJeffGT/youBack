@@ -152,7 +152,7 @@ class PageController extends Controller
             'commentNum' => $pageCommentService->getNumber($page),
             'collectNum' => $collectPageService->getNumber($page),
         );
-        $this->success($page);
+        return $this->success($page);
     }
 
     public function list(PageService $pageService, UserService $userService, ColumnService $columnService, ColumnClassificationService $columnClassificationService, LikePageService $likePageService, PageCommentService $pageCommentService, CollectPageService $collectPageService): JsonResponse
