@@ -61,7 +61,7 @@ class PageRepository extends ServiceEntityRepository
         ;
     }
 
-    public function info($id): ?deletePage
+    public function info($id): ?Page
     {
         $rst = $this->find($id);
         return $rst;
