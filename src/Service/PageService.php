@@ -30,6 +30,12 @@ class PageService
         return $pages;
     }
 
+    public function info($id): ?Page
+    {
+        $page = $this->pageDb->info($id);
+        return $page;
+    }
+
     public function list($column, $class, $query, $lastId, $limit): array
     {
         if ($query !== '') {

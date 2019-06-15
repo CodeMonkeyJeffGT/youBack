@@ -61,6 +61,12 @@ class PageRepository extends ServiceEntityRepository
         ;
     }
 
+    public function info($id): ?deletePage
+    {
+        $rst = $this->find($id);
+        return $rst;
+    }
+
     public function listPages($column, $class, $query, $lastId, $limit): array
     {
         $tmp = $this->createQueryBuilder('p')

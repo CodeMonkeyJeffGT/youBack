@@ -111,6 +111,56 @@ class PageController extends Controller
         return $this->success($pages);
     }
 
+    public function info(PageService $pageService, UserService $userService, ColumnService $columnService, ColumnClassificationService $columnClassificationService, LikePageService $likePageService, PageCommentService $pageCommentService, CollectPageService $collectPageService): JsonResponse
+    {
+        $checkRst = $this->checkParam('HEADER', array(
+            static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
+        ));
+        if ($checkRst !== static::OK) {
+            return $this->error($checkRst);
+        }
+        $user = $userService->getUser($this->params[static::TOKEN_NAME]['id']);
+        if (is_null($user)) {
+            return $this->error(static::ERROR, '用户不存在');
+        }
+        $checkRst = $this->checkParam('GET', array(
+            'id' => array('type' => 'number'),
+        ));
+        if ($checkRst !== static::OK) {
+            return $this->error($checkRst);
+        }
+        $page = $pageService->info($this->params['id']);
+        $page = array(
+            'id' => $page->getId(),
+            'name' => $page->getName(),
+            'content' => $page->getContent(),
+            'user' => array(
+                'id' => $page->getUser()->getId(),
+                'nickname' => $page->getUser()->getNickName(),
+                'sex' => $page->getUser()->getSex(),
+                'headpic' => $page->getUser()->getHeadpic(),
+                'sign' => $page->getUser()->getSign(),
+                'created' => $page->getUser()->getCreated()->format('Y-m-d H:i:s'),
+                'school' => array(
+                    'id' => $page->getUser()->getSchool()->getId(),
+                    'name' => $page->getUser()->getSchool()->getName(),
+                ),
+            ),
+            'column' => array(
+                'name' => $page->getAcolumn()->getName(),
+                'id' => $page->getAcolumn()->getId(),
+                'type' => $page->getAcolumn()->getType(),
+            ),
+            'created' => $page->getCreated()->format('Y-m-d H:i:s'),
+            'isLike' => $likePageService->checkLike($user, $page),
+            'isCollect' => $collectPageService->checkCollect($user, $page),
+            'likeNum' => $likePageService->getNumber($page),
+            'commentNum' => $pageCommentService->getNumber($page),
+            'collectNum' => $collectPageService->getNumber($page),
+        );
+        $this->success($page);
+    }
+
     public function list(PageService $pageService, UserService $userService, ColumnService $columnService, ColumnClassificationService $columnClassificationService, LikePageService $likePageService, PageCommentService $pageCommentService, CollectPageService $collectPageService): JsonResponse
     {
         $checkRst = $this->checkParam('HEADER', array(

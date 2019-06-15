@@ -114,6 +114,11 @@ page-list:
     path: /api/v1/pages
     controller: App\Controller\PageController::list
     methods: GET
+#帖子详情
+page-info:
+    path: /api/v1/pages/{id}
+    controller: App\Controller\PageController::info
+    methods: GET
 #发布帖子
 page-publish:
     path: /api/v1/pages
