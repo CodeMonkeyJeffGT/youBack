@@ -62,7 +62,7 @@ class MessagesController extends Controller
         foreach ($msgs as $key => $value) {
             $msgs[$key] = array(
                 'msgs' => $value['content'],
-                'type' => $value['user_id'] == $user.getId(),
+                'type' => $value['user_id'] == $user->getId(),
             );
         }
         return $this->success($users);

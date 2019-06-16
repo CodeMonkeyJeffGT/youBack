@@ -36,15 +36,15 @@ class MessageRepository extends ServiceEntityRepository
         $sql = 'SELECT `u`.`id`, `m`.`user_id`, `m`.`content`
             FROM `user` `u`, `message` `m`
             WHERE (
-                `m`.`user_id` = ' . $user.getId() . '
+                `m`.`user_id` = ' . $user->getId() . '
                 AND 
-                `m`.`sender_id` = ' . $to.getId() . '
+                `m`.`sender_id` = ' . $to->getId() . '
             )
             OR
             (
-                `m`.`user_id` = ' . $to.getId() . '
+                `m`.`user_id` = ' . $to->getId() . '
                 AND 
-                `m`.`sender_id` = ' . $user.getId() . '
+                `m`.`sender_id` = ' . $user->getId() . '
             )
         ';
         $conn = $this->getEntityManager()->getConnection();
