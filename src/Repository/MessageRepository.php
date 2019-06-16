@@ -33,14 +33,16 @@ class MessageRepository extends ServiceEntityRepository
 
     public function detail($user, $to)
     {
-        $sql = 'SELECT `m`.`id`, `m`.`user_id`, `m`.`content`, `m`.`created`, `u`.`nickname` `nickname`, `u`.`headpic` `headpic`
-            FROM `user` `u`, `message` `m`
+        $sql = 'SELECT `m`.`id`, `m`.`user_id`, `m`.`content`, `m`.`created`, `ut`.`nickname` `nickname`, `ut`.`headpic` `headpic`
+            FROM `user` `u`, `message` `m`, `user` `ut`
             WHERE (
                 `m`.`user_id` = ' . $user->getId() . '
                 AND 
                 `m`.`sender_id` = ' . $to->getId() . '
                 AND
                 `u`.`id` = `m`.`user_id`
+                AND
+                `ut`.`id` = `m`.`user_id`
             )
             OR
             (
@@ -49,6 +51,8 @@ class MessageRepository extends ServiceEntityRepository
                 `m`.`sender_id` = ' . $user->getId() . '
                 AND
                 `u`.`id` = `m`.`sender_id`
+                AND
+                `ut`.`id` = `m`.`user_id`
             )
         ';
         $conn = $this->getEntityManager()->getConnection();
