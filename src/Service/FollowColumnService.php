@@ -27,7 +27,7 @@ class FollowColumnService
         return $follows;
     }
 
-    public function checkFollow($user, $column): boll
+    public function checkFollow($user, $column): bool
     {
         if ($this->followColumnDb->checkFollow($user, $column) === false) {
             return false;
