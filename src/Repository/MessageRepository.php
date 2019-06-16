@@ -33,12 +33,40 @@ class MessageRepository extends ServiceEntityRepository
 
     public function detail($user, $to)
     {
-
+        $sql = 'SELECT `u`.`id`, `m`.`user_id`, `m`.`content`
+            FROM `user` `u`, `message` `m`
+            WHERE (
+                `m`.`user_id` = ' . $user.getId() . '
+                AND 
+                `m`.`sender_id` = ' . $to.getId() . '
+            )
+            OR
+            (
+                `m`.`user_id` = ' . $to.getId() . '
+                AND 
+                `m`.`sender_id` = ' . $user.getId() . '
+            )
+        ';
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(array());
+        $msgs = $stmt->fetchAll();
+        return $msgs;
     }
 
     public function send($user, $to, $content)
     {
-
+        $entityManager = $this->getEntityManager();
+        $message = new Message();
+        $message->setType(0)
+            ->setUser($user)
+            ->setSender($to)
+            ->setContent($content)
+            ->setCreated(new \DateTime('NOW'))
+        ;
+        $entityManager->persist($pageComment);
+        $entityManager->flush();
+        return $pageComment;
     }
 
     // /**
