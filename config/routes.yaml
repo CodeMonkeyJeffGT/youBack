@@ -218,12 +218,16 @@ page-uncollect:
 #获取消息列表
 message-list:
     path: /api/v1/messages
-    controller: App\Controller\MessageController::list
+    controller: App\Controller\MessagesController::list
+    methods: GET
+message-detail:
+    path: /api/v1/messages/{id}
+    controller: App\Controller\MessagesController::detail
     methods: GET
 #发消息
 message-send:
     path: /api/v1/messages
-    controller: App\Controller\MessageController::send
+    controller: App\Controller\MessagesController::send
     methods: POST
 #功能 ----------------------------------------------------------
 #获取功能菜单

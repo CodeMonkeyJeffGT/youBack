@@ -19,6 +19,30 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
+    public function list($user)
+    {
+        $sql = 'SELECT `u`.`id`,`u`.`nickname`,`u`.`sex`,`u`.`headpic`,`u`.`sign`,`u`.`created`,`s`.`name` `school_name` `s`.`id` `school_id`
+            FROM `user` `u`, `school` `s`
+            LEFT JOIN `follow_user` ON `u`.`id` = `user_id`
+            WHERE `u`.`id` = ' . $user->getId() . '
+        ';
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(array());
+        $users = $stmt->fetchAll();
+        return $users;
+    }
+
+    public function detail($user, $to)
+    {
+
+    }
+
+    public function send($user, $to, $content)
+    {
+
+    }
+
     // /**
     //  * @return Message[] Returns an array of Message objects
     //  */
