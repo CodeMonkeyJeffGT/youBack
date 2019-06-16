@@ -39,12 +39,16 @@ class MessageRepository extends ServiceEntityRepository
                 `m`.`user_id` = ' . $user->getId() . '
                 AND 
                 `m`.`sender_id` = ' . $to->getId() . '
+                AND
+                `u`.`id` = `m`.`user_id`
             )
             OR
             (
                 `m`.`user_id` = ' . $to->getId() . '
                 AND 
                 `m`.`sender_id` = ' . $user->getId() . '
+                AND
+                `u`.`id` = `m`.`sender_id`
             )
         ';
         $conn = $this->getEntityManager()->getConnection();

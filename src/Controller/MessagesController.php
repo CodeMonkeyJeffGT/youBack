@@ -64,7 +64,7 @@ class MessagesController extends Controller
                 'id' => $value['id'],
                 'msgs' => $value['content'],
                 'type' => $value['user_id'] == $user->getId(),
-                `created` => $value['created'],
+                'created' => $value['created'],
             );
         }
         return $this->success($msgs);
