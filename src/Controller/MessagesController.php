@@ -62,6 +62,8 @@ class MessagesController extends Controller
         foreach ($msgs as $key => $value) {
             $msgs[$key] = array(
                 'id' => $value['id'],
+                'nickname' => $value['nickname'],
+                'headpic' => $value['headpic'],
                 'msgs' => $value['content'],
                 'type' => $value['user_id'] == $user->getId(),
                 'created' => $value['created'],
