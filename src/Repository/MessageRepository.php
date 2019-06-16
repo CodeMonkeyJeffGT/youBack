@@ -23,9 +23,9 @@ class MessageRepository extends ServiceEntityRepository
     {
         $sql = 'SELECT `u`.`id`,`u`.`nickname`,`u`.`sex`,`u`.`headpic`,`u`.`sign`,`u`.`created`,`s`.`name` `school_name`, `s`.`id` `school_id`
             FROM `user` `u`, `school` `s`
-            LEFT JOIN `follow_user` ON `u`.`id` = `user_id`
+            LEFT JOIN `follow_user` `f` ON `u`.`id` = `f`.`user_id`
             WHERE `u`.`school_id` = `s`.`id`
-            AND `u`.`id` = ' . $user->getId() . '
+            AND `f`.`user_id` = ' . $user->getId() . '
         ';
         $conn = $this->getEntityManager()->getConnection();
         $stmt = $conn->prepare($sql);
