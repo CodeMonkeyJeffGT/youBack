@@ -65,7 +65,7 @@ class MessagesController extends Controller
                 'type' => $value['user_id'] == $user->getId(),
             );
         }
-        return $this->success($users);
+        return $this->success($msgs);
     }
 
     public function send($id, UserService $userService, MessageService $messageService): JsonResponse
