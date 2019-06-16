@@ -33,7 +33,7 @@ class MessageRepository extends ServiceEntityRepository
 
     public function detail($user, $to)
     {
-        $sql = 'SELECT `u`.`id`, `m`.`user_id`, `m`.`content`, `m`.`created`
+        $sql = 'SELECT `m`.`id`, `m`.`user_id`, `m`.`content`, `m`.`created`
             FROM `user` `u`, `message` `m`
             WHERE (
                 `m`.`user_id` = ' . $user->getId() . '

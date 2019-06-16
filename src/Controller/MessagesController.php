@@ -61,6 +61,7 @@ class MessagesController extends Controller
         $msgs = $messageService->detail($user, $to);
         foreach ($msgs as $key => $value) {
             $msgs[$key] = array(
+                'id' => $value['id'],
                 'msgs' => $value['content'],
                 'type' => $value['user_id'] == $user->getId(),
                 `created` => $value['created'],
