@@ -226,7 +226,7 @@ message-detail:
     methods: GET
 #发消息
 message-send:
-    path: /api/v1/messages
+    path: /api/v1/messages/{id}
     controller: App\Controller\MessagesController::send
     methods: POST
 #功能 ----------------------------------------------------------
