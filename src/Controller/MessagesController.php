@@ -90,7 +90,7 @@ class MessagesController extends Controller
         if (empty($to)) {
             return $this->error(static::ERROR, '用户不存在');
         }
-        $messageService->send($user, $to, $this->param['content']);
+        $messageService->send($user, $to, $this->params['content']);
         return $this->success();
     }
 
