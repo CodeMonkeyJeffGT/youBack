@@ -64,9 +64,9 @@ class MessageRepository extends ServiceEntityRepository
             ->setContent($content)
             ->setCreated(new \DateTime('NOW'))
         ;
-        $entityManager->persist($pageComment);
+        $entityManager->persist($message);
         $entityManager->flush();
-        return $pageComment;
+        return $message;
     }
 
     // /**
