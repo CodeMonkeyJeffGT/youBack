@@ -21,10 +21,11 @@ class MessageRepository extends ServiceEntityRepository
 
     public function list($user)
     {
-        $sql = 'SELECT `u`.`id`,`u`.`nickname`,`u`.`sex`,`u`.`headpic`,`u`.`sign`,`u`.`created`,`s`.`name` `school_name` `s`.`id` `school_id`
+        $sql = 'SELECT `u`.`id`,`u`.`nickname`,`u`.`sex`,`u`.`headpic`,`u`.`sign`,`u`.`created`,`s`.`name` `school_name`, `s`.`id` `school_id`
             FROM `user` `u`, `school` `s`
             LEFT JOIN `follow_user` ON `u`.`id` = `user_id`
-            WHERE `u`.`id` = ' . $user->getId() . '
+            WHERE `u`.`school_id` = `s`.`id`
+            AND `u`.`id` = ' . $user->getId() . '
         ';
         $conn = $this->getEntityManager()->getConnection();
         $stmt = $conn->prepare($sql);
