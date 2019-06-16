@@ -54,12 +54,20 @@ class ColumnController extends Controller
         return $this->success($columns);
     }
 
-    public function info($id, ColumnService $columnService, FollowColumnService $followColumnService, ColumnClassificationService $columnClassificationService, PageService $pageService): JsonResponse
+    public function info($id, UserService $userService, ColumnService $columnService, FollowColumnService $followColumnService, ColumnClassificationService $columnClassificationService, PageService $pageService): JsonResponse
     {
         $columnObj = $columnService->getColumn($id);
         if (empty($columnObj)) {
             return $this->error(static::ERROR, '版块不存在');
         }
+        $checkRst = $this->checkParam('JSON', array(
+            'name' => array('type' => 'string'),
+            'description' => array('type' => 'string'),
+        ));
+        if ($checkRst !== static::OK) {
+            return $this->error($checkRst);
+        }
+        $user = $userService->getUser($this->params[static::TOKEN_NAME]['id']);
         $classifications = $columnClassificationService->getClassifications($columnObj);
         foreach ($classifications as $key => $value) {
             $classifications[$key] = array(
@@ -90,6 +98,7 @@ class ColumnController extends Controller
             'pageNum' => $pageService->getNumber($columnObj),
             'classification' => $classifications,
             'school' => null,
+            'isFollowed' => $followColumnService->checkFollow($user, $columnObj),
         );
         if ( ! is_null($columnObj->getSchool())) {
             $column['school'] = array(

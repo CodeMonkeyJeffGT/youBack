@@ -170,6 +170,7 @@ class PageController extends Controller
         $this->checkParam('GET', array(
             'columnId' => array('type' => 'number', 'required' => false, 'default' => null),
             'classId' => array('type' => 'number', 'required' => false, 'default' => null),
+            'sp' => array('type' => 'string', 'required' => false, 'default' => ''),
             'query' => array('type' => 'string', 'required' => false, 'default' => ''),
             'lastId' => array('type' => 'number', 'required' => false, 'default' => 0),
             'limit' => array('type' => 'number', 'required' => false, 'default' => 20),
