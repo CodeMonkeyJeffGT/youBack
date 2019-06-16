@@ -60,9 +60,8 @@ class ColumnController extends Controller
         if (empty($columnObj)) {
             return $this->error(static::ERROR, '版块不存在');
         }
-        $checkRst = $this->checkParam('JSON', array(
-            'name' => array('type' => 'string'),
-            'description' => array('type' => 'string'),
+        $checkRst = $this->checkParam('HEADER', array(
+            static::TOKEN_NAME => array('type' => 'jwt', 'required' => false),
         ));
         if ($checkRst !== static::OK) {
             return $this->error($checkRst);
